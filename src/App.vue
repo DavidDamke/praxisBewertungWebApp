@@ -18,12 +18,14 @@
 import AddEntry from "./components/AddEntry.vue";
 import ListEntries from "./components/ListEntries.vue";
 import axios from "axios";
+import Login from './components/login.vue';
 
 export default {
   name: "App",
   components: {
     AddEntry,
-    ListEntries
+    ListEntries,
+    Login
   },
   data: function() {
     return {
