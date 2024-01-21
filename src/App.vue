@@ -1,6 +1,8 @@
 <template>
   <div>
-    <h1>Professor Rating App</h1>
+    <!-- <h1>Professor Rating App</h1> -->
+        <router-view></router-view>
+    <!-- <login></login>
     <AddEntry id="addEntry" @entryAdded="addEntry"></AddEntry>
     <ListEntries
       id="listEntry"
@@ -10,7 +12,7 @@
       :index="index"
       @entryRemoved="removeEntry"
       @entryEdited="editEntry"
-    ></ListEntries>
+    ></ListEntries> -->
   </div>
 </template>
 
@@ -24,45 +26,45 @@ export default {
   name: "App",
   components: {
     AddEntry,
-    ListEntries,
-    Login
+   // ListEntries,
+    // Login
   },
   data: function() {
     return {
-      listOfEntries: []
+      // listOfEntries: []
     };
   },
   methods: {
-    addEntry: function(e) {
-      axios
-        .post("http://localhost:8080/profs/", {
-          name: e.name,
-          rating: e.rating
-        })
-        .then(response => {
-          this.listOfEntries = response.data;
-        });
-    },
-    editEntry: function(e) {
-      axios
-        .put("http://localhost:8080/profs/" + e.index, {
-          name: e.name,
-          rating: e.rating
-        })
-        .then(response => {
-          this.listOfEntries = response.data; //TODO: change this, do not return full list
-        });
-    },
-    removeEntry: function(e) {
-      axios.delete("http://localhost:8080/profs/" + e.index).then(response => {
-        this.listOfEntries = response.data;
-      });
-    }
+    // addEntry: function(e) {
+    //   axios
+    //     .post("http://localhost:8080/profs/", {
+    //       name: e.name,
+    //       rating: e.rating
+    //     })
+    //     .then(response => {
+    //       this.listOfEntries = response.data;
+    //     });
+    // },
+    // editEntry: function(e) {
+    //   axios
+    //     .put("http://localhost:8080/profs/" + e.index, {
+    //       name: e.name,
+    //       rating: e.rating
+    //     })
+    //     .then(response => {
+    //       this.listOfEntries = response.data; //TODO: change this, do not return full list
+    //     });
+    // },
+    // removeEntry: function(e) {
+    //   axios.delete("http://localhost:8080/profs/" + e.index).then(response => {
+    //     this.listOfEntries = response.data;
+    //   });
+    // }
   },
   mounted() {
-    axios.get("http://localhost:8080/profs/").then(response => {
-      this.listOfEntries = response.data;
-    });
+    // axios.get("http://localhost:8080/profs/").then(response => {
+    //   this.listOfEntries = response.data;
+    // });
   }
 };
 </script>

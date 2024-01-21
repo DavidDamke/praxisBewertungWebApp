@@ -13,13 +13,19 @@
         <button type="submit">Login</button>
       </form>
       <p v-if="errorMessage">{{ errorMessage }}</p>
+      <button @click="returnLogingSelection">back</button>
+
     </div>
+    
   </template>
   
   <script>
   import axios from 'axios';
   
   export default {
+    methods:{
+      
+    },
     data() {
       return {
         credentials: {
@@ -30,10 +36,14 @@
       };
     },
     methods: {
+      returnLogingSelection(){
+          this.$router.push('/');
+        },
       async login() {
         try {
           const response = await axios.post('http://localhost:8080/login', this.credentials);
-          this.$router.push('/app'); // Redirect to dashboard or another protected route
+          console.info(response);
+          this.$router.push('/mainpage');
         } catch (error) {
           this.errorMessage = 'Invalid username or password.';
         }
