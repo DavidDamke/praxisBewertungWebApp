@@ -1,76 +1,34 @@
 <template>
-    <div>
-      <span v-show="!isEditable" id="name" @click="editEntry">{{ entry.name }}</span>
-      <v-text-field
-        id="input"
-        v-show="isEditable"
-        label="Name of professor"
-        v-model="entry.name"
-        @focusout="editEntry"
-        ref="input"
-      ></v-text-field>
-  
-      <v-rating v-model="entry.rating" background-color="black" color="#ffcc00" @input="editRating"></v-rating>
-      <v-btn @click="removeEntry">Remove</v-btn>
-    </div>
-  </template>
-  
-  <script>
-  export default {
-    name: "ListEntries",
-    props: ["entry", "index"],
-    data: function() {
-      return {
-        isEditable: false
-      };
-    },
-    methods: {
-      removeEntry: function() {
-        this.$emit("entryRemoved", {
-          index: this.index
-        });
-      },
-      editRating: function() {
-        this.$emit("entryEdited", {
-          index: this.index,
-          name: this.entry.name,
-          rating: this.entry.rating
-        });
-      },
-      editEntry: function() {
-        if (this.isEditable) {
-          this.isEditable = false;
-          this.$emit("entryEdited", {
-            index: this.index,
-            name: this.entry.name,
-            rating: this.entry.rating
-          });
-        } else {
-          this.isEditable = true;
-  
-          // Focus the component, but we have to wait
-          // so that it will be showing first.
-          this.$nextTick().then(() => {
-            this.focusInput();
-          });
-        }
-      },
-      focusInput() {
-        this.$refs.input.focus();
-      }
-    }
-  };
-  </script>
-  
-  <!-- Add "scoped" attribute to limit CSS to this component only -->
-  <style scoped>
-  div {
-    display: flex;
-    align-items: center;
-  }
-  #name,
-  #input {
-    width: 300px;
-    text-align: left;
-  }
-  </style>
+  <v-container>
+    <v-list>
+      <v-list-item-group>
+        <v-list-item v-for="company in companies" :key="company._id">
+          <v-list-item-content>
+            <v-list-item-title>{{ company.name }}</v-list-item-title>
+            <v-list-item-subtitle>{{ company.industry }} - {{ company.location }}</v-list-item-subtitle>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list-item-group>
+    </v-list>
+  </v-container>
+</template>
+
+<script>
+  import axios from 'axios';
+
+export default {
+
+  data() {
+    return {
+      companies: [],
+    };
+  },
+  mounted() {
+    axios.get('http://localhost:8080/getAllCompanies').then(response => {
+      this.companies = response.data;
+      console.log(response.data);
+    }).catch(error => console.error('Error:', error));
+
+  },
+}
+</script>
