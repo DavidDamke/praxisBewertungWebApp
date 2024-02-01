@@ -1,7 +1,8 @@
 <template>
   <div>
     <!-- <h1>Professor Rating App</h1> -->
-        <router-view></router-view>
+    <nav-main-page></nav-main-page>
+    <router-view></router-view>
     <!-- <login></login>
     <AddEntry id="addEntry" @entryAdded="addEntry"></AddEntry>
     <ListEntries
@@ -21,11 +22,12 @@ import AddEntry from "./components/AddEntry.vue";
 import ListEntries from "./components/ListEntries.vue";
 import axios from "axios";
 import Login from './components/login.vue';
+import NavMainPage from './components/NavMainPage.vue';
 
 export default {
   name: "App",
   components: {
-    AddEntry,
+    NavMainPage
    // ListEntries,
     // Login
   },
@@ -70,20 +72,5 @@ export default {
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  padding: 60px;
-  width: 700px;
-  margin-left: auto;
-  margin-right: auto;
-  background-color: lightblue;
-}
-#addEntry,
-h1 {
-  margin-bottom: 40px;
-}
+
 </style>
