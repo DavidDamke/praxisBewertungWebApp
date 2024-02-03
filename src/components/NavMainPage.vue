@@ -6,8 +6,11 @@
     <v-btn @click="toggleMenu"><v-icon>mdi-menu</v-icon></v-btn>
     </div>
     <div v-if="menuVisible" class="navMenu">
-      <router-link to="/route1">Route 2</router-link>
-      <router-link to="/route2">Login</router-link>
+      <router-link to="/route1">Praxisstelle hinzufügen</router-link>
+      <router-link to="/route2">Parxisstelle suchen</router-link>
+      <router-link to="/route2">Profil</router-link>
+      <router-link to="/route2">Logout</router-link>
+
     </div>
   </div>
 </template>
@@ -16,7 +19,7 @@
 export default {
   data() {
     return {
-        menuVisible : true
+        menuVisible : false
     };
   },
   methods: {
