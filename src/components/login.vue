@@ -23,9 +23,6 @@
   import axios from 'axios';
   
   export default {
-    methods:{
-      
-    },
     data() {
       return {
         credentials: {

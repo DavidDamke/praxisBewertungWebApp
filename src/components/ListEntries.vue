@@ -1,54 +1,77 @@
 <template>
   <v-container>
-    <v-list>
-      <v-list-item-group>
-        <v-list-item v-for="company in companies" :key="company._id">
-          <v-list-item-content id="companyContentList">
-            <v-list-item-content>{{ company.name }}</v-list-item-content>
-            <v-list-item-content><v-rating  id="rating" :model-value="avgRating(company)" readonly></v-rating></v-list-item-content>
-         
-            <!-- <v-list-item-subtitle>{{ company.industry }} - {{ company.location }}</v-list-item-subtitle> -->
-          </v-list-item-content>
-        </v-list-item>
-      </v-list-item-group>
-    </v-list>
+    <v-row class="row">
+      <v-col
+        cols="12"
+        md="4"
+        v-for="company in companies"
+        :key="company._id"
+      >
+        <v-card
+          v-model="cardInfo"
+          class="mx-auto my-card"
+          variant="flat"
+          elevation="5"
+          @click="showMore"
+        > <template v-slot:title>
+            {{ company.name }}
+          </template>
+          <template v-slot:append>
+            <v-rating
+              id="rating"
+              :model-value="avgRating(company)"
+              readonly
+            ></v-rating>
+
+          </template> </v-card>
+      </v-col>
+    </v-row>
+
   </v-container>
 </template>
 
 <script>
-  import axios from 'axios';
+import axios from "axios";
 
 export default {
-
   methods: {
     avgRating(company) {
       var sumratings = 0;
-      for (var i = 0; i < company.ratings.length; i++){
+      for (var i = 0; i < company.ratings.length; i++) {
         sumratings += company.ratings[i].score;
       }
-            console.log(sumratings);
-
-      return sumratings/company.ratings.length;
-      }
+      return sumratings / company.ratings.length;
     },
+    showMore() {
+      console.log("Card Clicked");
+    },
+  },
   data() {
     return {
       companies: [],
-      ratingValue: 0
+      ratingValue: 0,
+      cardInfo: "",
     };
   },
   mounted() {
-    axios.get('http://localhost:8080/getAllCompanies').then(response => {
-      this.companies = response.data;
-    }).catch(error => console.error('Error:', error));
-
+    axios
+      .get("http://localhost:8080/getAllCompanies")
+      .then((response) => {
+        this.companies = response.data;
+      })
+      .catch((error) => console.error("Error:", error));
   },
- 
-}
+};
 </script>
 <style scoped>
-#companyContentList {
-    display: flex;
+.row {
+  border: 1px solid black;
 }
-
+.my-card {
+  padding: 10px; /* Adjust as needed */
+}
+#companyContentList {
+  display: flex;
+  border: 1px solid black;
+}
 </style>
