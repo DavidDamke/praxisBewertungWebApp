@@ -3,7 +3,7 @@
     <v-row class="row">
       <v-col
         cols="12"
-        md="4"
+        md="full"
         v-for="company in companies"
         :key="company._id"
       >
@@ -58,6 +58,7 @@ export default {
       .get("http://localhost:8080/getAllCompanies")
       .then((response) => {
         this.companies = response.data;
+        this.companies;
       })
       .catch((error) => console.error("Error:", error));
   },
