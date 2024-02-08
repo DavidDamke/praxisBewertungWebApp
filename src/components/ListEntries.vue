@@ -4,7 +4,7 @@
       <v-col
         cols="12"
         md="full"
-        v-for="company in companies"
+        v-for="company in filterdCompanies"
         :key="company._id"
       >
         <v-card
@@ -45,20 +45,37 @@ export default {
     showMore() {
       console.log("Card Clicked");
     },
+    filterCompanies() {
+      console.log("Filter", this.searchValue);
+      this.filterdCompanies = this.companies.filter((document) =>
+        document.name.toLowerCase().includes(this.searchValue.toLowerCase())
+      );
+    },
+  },
+  props: {
+    searchValue: "",
   },
   data() {
     return {
       companies: [],
       ratingValue: 0,
       cardInfo: "",
+      filterdCompanies: [],
     };
+  },
+  watch: {
+    // Watcher for the searchValue
+    searchValue(newVal, oldVal) {
+      this.filterCompanies();
+    },
   },
   mounted() {
     axios
       .get("http://localhost:8080/getAllCompanies")
       .then((response) => {
         this.companies = response.data;
-        this.companies;
+        console.log(this.companies);
+        this.filterCompanies();
       })
       .catch((error) => console.error("Error:", error));
   },

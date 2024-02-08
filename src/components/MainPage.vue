@@ -1,8 +1,8 @@
 <template>
   <div>
-    <search></search>
+    <search @searchInput="setSearchInput"></search>
     <!-- <filter-companies></filter-companies> -->
-    <list-entries></list-entries>
+    <list-entries :searchValue="searchInput"></list-entries>
 
   </div>
 </template>
@@ -13,6 +13,16 @@ import ListEntries from "./ListEntries.vue";
 import Search from "./Search.vue";
 export default {
   components: { ListEntries, Search, FilterCompanies },
+  data() {
+    return {
+      searchInput: "",
+    };
+  },
+  methods: {
+    setSearchInput(value) {
+      this.searchInput = value;
+    },
+  },
 };
 </script>
 
