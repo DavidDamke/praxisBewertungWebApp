@@ -22,7 +22,7 @@
               :model-value="avgRating(company)"
               readonly
             ></v-rating>
-            <praxisstelle-bewerten></praxisstelle-bewerten>
+            <praxisstelle-bewerten :companyName="company.name"></praxisstelle-bewerten>
 
           </template> </v-card>
       </v-col>
