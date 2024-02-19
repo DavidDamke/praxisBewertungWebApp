@@ -22,6 +22,7 @@
               :model-value="avgRating(company)"
               readonly
             ></v-rating>
+            <praxisstelle-bewerten></praxisstelle-bewerten>
 
           </template> </v-card>
       </v-col>
@@ -32,8 +33,10 @@
 
 <script>
 import axios from "axios";
+import PraxisstelleBewerten from "./PraxisstelleBewerten.vue";
 
 export default {
+  components: { PraxisstelleBewerten },
   methods: {
     avgRating(company) {
       var sumratings = 0;
@@ -86,7 +89,7 @@ export default {
   border: 1px solid black;
 }
 .my-card {
-  padding: 10px; /* Adjust as needed */
+  padding: 10px;
 }
 #companyContentList {
   display: flex;

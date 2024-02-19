@@ -8,7 +8,6 @@
       <v-text-field
         label="Search"
         type="text"
-        clearable
         append-inner-icon="mdi-magnify"
         @click:append-inner="onSearch"
         v-model="searchInput"
