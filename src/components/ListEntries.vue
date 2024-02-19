@@ -41,7 +41,11 @@ export default {
     avgRating(company) {
       var sumratings = 0;
       for (var i = 0; i < company.ratings.length; i++) {
-        sumratings += company.ratings[i].score;
+        sumratings +=
+          company.ratings[i].aufgaben +
+          company.ratings[i].betreuung +
+          company.ratings[i].gehalt;
+        sumratings = sumratings / 3;
       }
       return sumratings / company.ratings.length;
     },

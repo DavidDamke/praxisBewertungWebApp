@@ -3,7 +3,10 @@
     width="300"
     class="mx-auto"
   >
-    <v-form ref="form">
+    <v-form
+      ref="form"
+      @submit.prevent="createNewCompany"
+    >
       <v-text-field
         v-model="unternehmen"
         label="Unternehmen"
@@ -36,15 +39,24 @@
       >
         <div class="ratingContainer">
           <p class="name">Aufgaben</p>
-          <v-rating class="rating"></v-rating>
+          <v-rating
+            v-model="aufgaben"
+            class="rating"
+          ></v-rating>
         </div>
         <div class="ratingContainer">
           <p class="name">Betreunung</p>
-          <v-rating class="rating"></v-rating>
+          <v-rating
+            v-model="betreuung"
+            class="rating"
+          ></v-rating>
         </div>
         <div class="ratingContainer">
           <p class="name">Gehalt</p>
-          <v-rating class="rating"></v-rating>
+          <v-rating
+            v-model="gehalt"
+            class="rating"
+          ></v-rating>
         </div>
 
       </div>
@@ -59,14 +71,52 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   data() {
     return {
       buttonPressed: true,
-      select: null,
+      select: 4,
       kommentar: null,
+      unternehmen: "ZF",
+      abteilung: "IOT",
       semester: ["1", "2", "3", "4", "5", "6", "9", "10", "11", "12", "13"],
+      gehalt: 4.5,
+      betreuung: 5,
+      aufgaben: 4,
+      formData: {},
     };
+  },
+  methods: {
+    createNewCompany() {
+      const formData = {
+        _id: this.unternehmen,
+        name: this.unternehmen,
+        semester: this.select,
+        abteilung: this.abteilung,
+        kommentar: this.kommentar,
+        ratings: [
+          {
+            aufgaben: this.aufgaben,
+            betreuung: this.betreuung,
+            gehalt: this.gehalt,
+          },
+        ],
+      };
+      this.formData = formData;
+      console.log(formData);
+      this.submitCompany();
+    },
+    async submitCompany() {
+      axios
+        .post("http://localhost:8080/addNewCompany", this.formData)
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((error) => console.error("Error:", error));
+      this.$router.push("/mainpage");
+    },
   },
 };
 </script>
