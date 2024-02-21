@@ -1,7 +1,10 @@
 <template>
   <div>
     <div class="navHeader">
-      <p>Praxissemster bewerten</p>
+      <router-link
+        class="routerLink"
+        to="/mainpage"
+      >Praxissemster finden/bewerten</router-link>
 
       <v-btn @click="toggleMenu"><v-icon>mdi-menu</v-icon></v-btn>
     </div>
@@ -9,8 +12,7 @@
       v-if="menuVisible"
       class="navMenu"
     >
-      <router-link to="/praxisstelleHinzufügen">Praxisstelle hinzufügen</router-link>
-      <router-link to="/mainpage">Parxisstelle suchen</router-link>
+      <router-link to="/praxisstelleBewerten">Praxisstelle bewerten</router-link>
       <router-link to="/route2">Profil</router-link>
       <router-link to="/route2">Logout</router-link>
 
@@ -22,7 +24,7 @@
 export default {
   data() {
     return {
-      menuVisible: false,
+      menuVisible: true,
     };
   },
   methods: {
@@ -37,6 +39,9 @@ export default {
 div {
   height: auto;
   background-color: lightgray;
+}
+.routerLink {
+  text-decoration: none;
 }
 .navHeader {
   display: flex;

@@ -1,42 +1,45 @@
 <template>
-  <v-container>
-    <v-row class="row">
-      <v-col
-        cols="12"
-        md="full"
-        v-for="company in filterdCompanies"
-        :key="company._id"
-      >
-        <v-card
-          v-model="cardInfo"
-          class="mx-auto my-card"
-          variant="flat"
-          elevation="5"
-          @click="showMore"
-        > <template v-slot:title>
-            {{ company.name }}
-          </template>
-          <template v-slot:append>
-            <v-rating
-              id="rating"
-              :model-value="avgRating(company)"
-              readonly
-            ></v-rating>
-            <praxisstelle-bewerten :companyName="company.name"></praxisstelle-bewerten>
+  <v-responsive
+    max-width="90%"
+    class="mx-auto"
+  >
+    <v-container>
 
-          </template> </v-card>
-      </v-col>
-    </v-row>
+      <v-row class="row">
+        <v-col
+          cols="12"
+          md="full"
+          v-for="company in filterdCompanies"
+          :key="company._id"
+        >
+          <v-card
+            v-model="cardInfo"
+            class="mx-auto my-card"
+            variant="flat"
+            elevation="5"
+            @click="showMore"
+          > <template v-slot:title>
+              {{ company.name }}
+            </template>
+            <template v-slot:append>
+              <v-rating
+                id="rating"
+                :model-value="avgRating(company)"
+                readonly
+              ></v-rating>
+            </template> </v-card>
+        </v-col>
+      </v-row>
 
-  </v-container>
+    </v-container>
+  </v-responsive>
 </template>
 
 <script>
 import axios from "axios";
-import PraxisstelleBewerten from "./PraxisstelleBewerten.vue";
 
 export default {
-  components: { PraxisstelleBewerten },
+  components: {},
   methods: {
     avgRating(company) {
       var sumratings = 0;

@@ -1,38 +1,24 @@
 <template>
-  <v-sheet
-    width="300"
+  <v-responsive
+    max-width="600"
     class="mx-auto"
   >
+    <h3>Hier kannst du dein Praxissemster bewerten</h3>
     <v-form
       ref="form"
       @submit.prevent="createNewCompany"
-    >
-      <v-text-field
+    > <v-text-field
         v-model="unternehmen"
         label="Unternehmen"
         required
-      ></v-text-field>
+      >
+      </v-text-field>
 
-      <v-select
-        v-model="select"
-        :items="semester"
-        label="Semester"
-        required
-      ></v-select>
       <v-text-field
         v-model="abteilung"
         label="Abteilung"
         required
       ></v-text-field>
-      <v-textarea
-        v-model="kommentar"
-        counter
-        label="Kommentar"
-        single-line
-      ></v-textarea>
-      <v-btn @click="buttonPressed=!buttonPressed">
-        Bewertung hinzufügen
-      </v-btn>
       <div
         class="praxisstelleBewerten"
         v-if="buttonPressed"
@@ -40,6 +26,7 @@
         <div class="ratingContainer">
           <p class="name">Aufgaben</p>
           <v-rating
+            active-color="orange-lighten-1"
             v-model="aufgaben"
             class="rating"
           ></v-rating>
@@ -47,6 +34,7 @@
         <div class="ratingContainer">
           <p class="name">Betreunung</p>
           <v-rating
+            active-color="orange-lighten-1"
             v-model="betreuung"
             class="rating"
           ></v-rating>
@@ -54,20 +42,37 @@
         <div class="ratingContainer">
           <p class="name">Gehalt</p>
           <v-rating
+            active-color="orange-lighten-1"
             v-model="gehalt"
+            class="rating"
+          ></v-rating>
+        </div>
+        <div class="ratingContainer">
+          <p class="name">Gesamt Bewertung</p>
+          <v-rating
+            active-color="orange-lighten-1"
+            v-model="gesamt"
             class="rating"
           ></v-rating>
         </div>
 
       </div>
+      <v-textarea
+        v-model="kommentar"
+        counter
+        label="Kommentar"
+        single-line
+      ></v-textarea>
+      <v-checkbox label="Würden Sie dieses Unternehmen weiterempfehlen"></v-checkbox>
+
       <v-btn
         class="me-4"
         type="submit"
       >
-        Submit
+        Bewertung hinzufügen
       </v-btn>
     </v-form>
-  </v-sheet>
+  </v-responsive>
 </template>
 
 <script>
@@ -77,14 +82,13 @@ export default {
   data() {
     return {
       buttonPressed: true,
-      select: 4,
       kommentar: null,
       unternehmen: "ZF",
       abteilung: "IOT",
-      semester: ["1", "2", "3", "4", "5", "6", "9", "10", "11", "12", "13"],
       gehalt: 4.5,
       betreuung: 5,
       aufgaben: 4,
+      gesamt: 3,
       formData: {},
     };
   },
@@ -101,6 +105,7 @@ export default {
             aufgaben: this.aufgaben,
             betreuung: this.betreuung,
             gehalt: this.gehalt,
+            gesamt: this.gesamt,
           },
         ],
       };
