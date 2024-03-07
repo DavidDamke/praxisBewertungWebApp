@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-container fluid >
     <div class="navHeader">
       <router-link
         class="routerLink"
@@ -17,7 +17,7 @@
       <router-link to="/route2">Logout</router-link>
 
     </div>
-  </div>
+  </v-container>
 </template>
 
 <script>

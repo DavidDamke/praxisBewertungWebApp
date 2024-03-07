@@ -1,78 +1,63 @@
 <template>
-  <v-responsive
-    max-width="600"
-    class="mx-auto"
-  >
-    <h3>Hier kannst du dein Praxissemster bewerten</h3>
-    <v-form
-      ref="form"
-      @submit.prevent="createNewCompany"
-    > <v-text-field
-        v-model="unternehmen"
-        label="Unternehmen"
-        required
-      >
-      </v-text-field>
+  <v-container>
+  <h3>Hier kannst du dein Praxissemster bewerten</h3>
+  <v-form ref="form" @submit.prevent="createNewCompany">
+    <v-row>
+      <v-col cols="12">
+        <v-text-field v-model="unternehmen" label="Unternehmen" required></v-text-field>
+      </v-col>
 
-      <v-text-field
-        v-model="abteilung"
-        label="Abteilung"
-        required
-      ></v-text-field>
-      <div
-        class="praxisstelleBewerten"
-        v-if="buttonPressed"
-      >
-        <div class="ratingContainer">
+      <v-col cols="12">
+        <v-text-field v-model="abteilung" label="Abteilung" required></v-text-field>
+      </v-col>
+    </v-row>
+
+    <div class="praxisstelleBewerten" v-if="buttonPressed">
+   
+        <v-col cols="12" sm="6" md="6" class="ratingContainer">
           <p class="name">Aufgaben</p>
-          <v-rating
-            active-color="orange-lighten-1"
-            v-model="aufgaben"
-            class="rating"
-          ></v-rating>
-        </div>
-        <div class="ratingContainer">
-          <p class="name">Betreunung</p>
-          <v-rating
-            active-color="orange-lighten-1"
-            v-model="betreuung"
-            class="rating"
-          ></v-rating>
-        </div>
-        <div class="ratingContainer">
+          <v-rating active-color="orange-lighten-1" v-model="aufgaben" class="rating"></v-rating>
+        </v-col>
+
+        <v-col cols="12" sm="6" md="6" class="ratingContainer">
+          <p class="name">Betreuung</p>
+          <v-rating active-color="orange-lighten-1" v-model="betreuung" class="rating"></v-rating>
+        </v-col>
+
+        <v-col cols="12" sm="6" md="6" class="ratingContainer">
           <p class="name">Gehalt</p>
-          <v-rating
-            active-color="orange-lighten-1"
-            v-model="gehalt"
-            class="rating"
-          ></v-rating>
-        </div>
-        <div class="ratingContainer">
+          <v-rating active-color="orange-lighten-1" v-model="gehalt" class="rating"></v-rating>
+        </v-col>
+
+        <v-col cols="12" sm="6" md="6" class="ratingContainer">
           <p class="name">Gesamt Bewertung</p>
-          <v-rating
-            active-color="orange-lighten-1"
-            v-model="gesamt"
-            class="rating"
-          ></v-rating>
-        </div>
+          <v-rating active-color="orange-lighten-1" v-model="gesamt" class="rating"></v-rating>
+        </v-col>
+ 
+    </div>
 
-      </div>
-      <v-textarea
-        v-model="kommentar"
-        counter
-        label="Kommentar"
-        single-line
-      ></v-textarea>
-      <v-checkbox label="Würden Sie dieses Unternehmen weiterempfehlen"></v-checkbox>
+    <v-row>
+      <v-col cols="12">
+        <v-textarea v-model="kommentar" counter label="Kommentar" single-line></v-textarea>
+      </v-col>
+    </v-row>
 
-      <v-btn
-        class="me-4"
-        type="submit"
-      >
-        Bewertung hinzufügen
-      </v-btn>
-    </v-form>
-  </v-responsive>
+    <v-row>
+      <v-col cols="12">
+        <v-checkbox label="Würden Sie dieses Unternehmen weiterempfehlen"></v-checkbox>
+      </v-col>
+    </v-row>
+
+    <v-row>
+      <v-col cols="12">
+        <v-btn class="me-4" type="submit">
+          Bewertung hinzufügen
+        </v-btn>
+      </v-col>
+    </v-row>
+  </v-form>
+</v-container>
+
 </template>
 
 <script>

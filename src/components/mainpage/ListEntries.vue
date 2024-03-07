@@ -1,14 +1,10 @@
 <template>
-  <v-responsive
-    max-width="90%"
-    class="mx-auto"
-  >
     <v-container>
+      <div class="scrollable-list">
 
       <v-row class="row">
         <v-col
           cols="12"
-          md="full"
           v-for="company in filterdCompanies"
           :key="company._id"
         >
@@ -30,9 +26,8 @@
             </template> </v-card>
         </v-col>
       </v-row>
-
+      </div>
     </v-container>
-  </v-responsive>
 </template>
 
 <script>
@@ -92,6 +87,11 @@ export default {
 };
 </script>
 <style scoped>
+
+.scrollable-list {
+  max-height: 75vh; /* Adjust based on your needs */
+  overflow-y: auto;
+}
 .row {
   border: 1px solid black;
 }
