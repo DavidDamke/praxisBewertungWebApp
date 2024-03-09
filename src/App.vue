@@ -1,28 +1,13 @@
 <template>
   <div>
-    <!-- <h1>Professor Rating App</h1> -->
     <nav-main-page></nav-main-page>
     <router-view></router-view>
-    <!-- <login></login>
-    <AddEntry id="addEntry" @entryAdded="addEntry"></AddEntry>
-    <ListEntries
-      id="listEntry"
-      v-for="(singleEntry, index) of listOfEntries"
-      :key="index"
-      :entry="singleEntry"
-      :index="index"
-      @entryRemoved="removeEntry"
-      @entryEdited="editEntry"
-    ></ListEntries> -->
+
   </div>
 </template>
 
 <script>
-import AddEntry from "./components/AddEntry.vue";
-import ListEntries from "./components/ListEntries.vue";
-import axios from "axios";
-import Login from './components/login.vue';
-import NavMainPage from './components/NavMainPage.vue';
+import NavMainPage from './components/nav/NavMainPage.vue';
 
 export default {
   name: "App",

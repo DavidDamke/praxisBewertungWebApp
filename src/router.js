@@ -1,9 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import loginVue from './components/login.vue';
+import loginVue from './components/login/login.vue';
 import AppVue from './App.vue';
-import MainPageVue from './components/MainPage.vue';
-import LoginSelectionVue from './components/LoginSelection.vue';
-import ParxisstelleBewertenVue from './components/ParxisstelleBewerten.vue';
+import MainPageVue from './components/mainpage/MainPage.vue';
+import LoginSelectionVue from './components/login/LoginSelection.vue';
+import ParxisstelleBewertenVue from './components/bewertenPage/ParxisstelleBewerten.vue';
 
 const routes = [
     { path: '/', redirect: '/login' },     // Redirect root path to /login
