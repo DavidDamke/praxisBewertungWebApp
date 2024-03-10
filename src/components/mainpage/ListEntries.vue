@@ -20,6 +20,8 @@
               <v-rating
                 id="rating"
                 :model-value="avgRating(company)"
+                half-increments
+
                 readonly
               ></v-rating>
             </template>
@@ -31,16 +33,86 @@
     <!-- Dialog -->
     <v-dialog
       v-model="showDialog"
-      max-width="500px"
-      max-height="auto"
     >
       <v-card>
         <v-card-title>
           {{ selectedCompany ? selectedCompany.name : '' }}
+          <v-rating
+                id="rating"
+                :model-value="avgRating(selectedCompany)"
+                half-increments
+                readonly
+                active-color="orange-lighten-1"
+
+              ></v-rating>
+              <p>Anzahl Bewertungen {{ this.selectedCompany.ratings.length}}</p>
+
         </v-card-title>
-        <v-card-text>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+        <v-card-text> 
+          <div
+        class="praxisstelleBewerten"
+      >
+
+        <v-col
+          cols="12"
+          sm="6"
+          md="6"
+          class="ratingContainer"
+        >
+          <p class="name">Aufgaben</p>
+          <v-rating
+            active-color="orange-lighten-1"
+            :model-value="avgAufgaben(selectedCompany)"
+            class="rating"
+          ></v-rating>
+        </v-col>
+
+        <v-col
+          cols="12"
+          sm="6"
+          md="6"
+          class="ratingContainer"
+        >
+          <p class="name">Betreuung</p>
+          <v-rating
+            active-color="orange-lighten-1"
+            :model-value="avgBetreuung(selectedCompany)"
+            class="rating"
+          ></v-rating>
+        </v-col>
+
+        <v-col
+          cols="12"
+          sm="6"
+          md="6"
+          class="ratingContainer"
+        >
+          <p class="name">Gehalt</p>
+          <v-rating
+            active-color="orange-lighten-1"
+            :model-value="avgGehalt(selectedCompany)"
+            class="rating"
+          ></v-rating>
+        </v-col>
+
+        <v-col
+          cols="12"
+          sm="6"
+          md="6"
+          class="ratingContainer"
+        >
+          <p class="name">Gesamt Bewertung</p>
+          <v-rating
+            active-color="orange-lighten-1"
+            :model-value="avgGesamt(selectedCompany)"
+            class="rating"
+          ></v-rating>
+        </v-col>
+
+      </div>
+          <p>Anzahl weiterEmpfehlen</p>
         </v-card-text>
+  
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
@@ -49,6 +121,10 @@
           ></v-btn>
         </v-card-actions>
       </v-card>
+
+
+
+    
     </v-dialog>
   </v-container>
 </template>
@@ -65,11 +141,47 @@ export default {
         sumratings +=
           company.ratings[i].aufgaben +
           company.ratings[i].betreuung +
-          company.ratings[i].gehalt;
-        sumratings = sumratings / 3;
+          company.ratings[i].gehalt +
+          company.ratings[i].gesamt;
+        sumratings = sumratings / 4;
       }
       return sumratings / company.ratings.length;
     },
+    avgGehalt(company){
+      var sumratings = 0;
+      for (var i = 0; i < company.ratings.length; i++) {
+        sumratings +=company.ratings[i].gehalt;
+      }
+      return sumratings / company.ratings.length;
+    },
+    avgGesamt(company){
+      var sumratings = 0;
+      for (var i = 0; i < company.ratings.length; i++) {
+        sumratings +=company.ratings[i].gesamt;
+      }
+      return sumratings / company.ratings.length;
+    },
+    avgAufgaben(company){
+      var sumratings = 0;
+      for (var i = 0; i < company.ratings.length; i++) {
+        sumratings +=company.ratings[i].aufgaben;
+      }
+      return sumratings / company.ratings.length;
+    },
+    avgBetreuung(company){
+      var sumratings = 0;
+      for (var i = 0; i < company.ratings.length; i++) {
+        sumratings +=company.ratings[i].betreuung;
+      }
+      return sumratings / company.ratings.length;
+    },
+
+
+
+
+
+
+
     showMore() {
       console.log("Card Clicked");
     },

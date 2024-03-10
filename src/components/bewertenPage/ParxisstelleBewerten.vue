@@ -25,7 +25,6 @@
 
       <div
         class="praxisstelleBewerten"
-        v-if="buttonPressed"
       >
 
         <v-col
@@ -99,7 +98,7 @@
 
       <v-row>
         <v-col cols="12">
-          <v-checkbox label="Würden Sie dieses Unternehmen weiterempfehlen"></v-checkbox>
+          <v-checkbox  v-model="weiterEmpfehlen" label="Würden Sie dieses Unternehmen weiterempfehlen"></v-checkbox>
         </v-col>
       </v-row>
 
@@ -126,31 +125,30 @@ export default {
     return {
       buttonPressed: true,
       kommentar: null,
-      unternehmen: "ZF",
-      abteilung: "IOT",
-      gehalt: 4.5,
-      betreuung: 5,
-      aufgaben: 4,
-      gesamt: 3,
+      unternehmen: "",
+      abteilung: "",
+      gehalt: 0,
+      betreuung: 0,
+      aufgaben: 0,
+      gesamt: 0,
+      weiterEmpfehlen: false,
       formData: {},
     };
   },
   methods: {
     createNewCompany() {
       const formData = {
-        _id: this.unternehmen,
+        _id: this.unternehmen.toLowerCase(),
+        name: this.unternehmen,
         ratings: [
           {
-            type: "rating", //TODO noch testen
             aufgaben: this.aufgaben,
             betreuung: this.betreuung,
             gehalt: this.gehalt,
             gesamt: this.gesamt,
-          },
-          {
-            type: "moreInformation",
             abteilung: this.abteilung,
             kommentar: this.kommentar,
+            weiterEmpfehlen: this.weiterEmpfehlen,
           },
         ],
       };
