@@ -1,7 +1,6 @@
 <template>
-    <v-container>
-      <div class="scrollable-list">
-
+  <v-container>
+    <div class="scrollable-list">
       <v-row class="row">
         <v-col
           cols="12"
@@ -9,12 +8,12 @@
           :key="company._id"
         >
           <v-card
-            v-model="cardInfo"
             class="mx-auto my-card"
             variant="flat"
             elevation="5"
-            @click="showMore"
-          > <template v-slot:title>
+            @click="showDialog = true; selectedCompany = company"
+          >
+            <template v-slot:title>
               {{ company.name }}
             </template>
             <template v-slot:append>
@@ -23,11 +22,35 @@
                 :model-value="avgRating(company)"
                 readonly
               ></v-rating>
-            </template> </v-card>
+            </template>
+          </v-card>
         </v-col>
       </v-row>
-      </div>
-    </v-container>
+    </div>
+
+    <!-- Dialog -->
+    <v-dialog
+      v-model="showDialog"
+      max-width="500px"
+      max-height="auto"
+    >
+      <v-card>
+        <v-card-title>
+          {{ selectedCompany ? selectedCompany.name : '' }}
+        </v-card-title>
+        <v-card-text>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            text="Close Dialog"
+            @click="showDialog = false"
+          ></v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </v-container>
 </template>
 
 <script>
@@ -62,6 +85,8 @@ export default {
   },
   data() {
     return {
+        showDialog: false,
+      selectedCompany: null, // To hold the clicked company's data
       companies: [],
       ratingValue: 0,
       cardInfo: "",
