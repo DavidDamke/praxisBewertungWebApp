@@ -19,9 +19,8 @@
             <template v-slot:append>
               <v-rating
                 id="rating"
-                :model-value="avgRating(company)"
                 half-increments
-
+                :model-value="avgRating(company)"
                 readonly
               ></v-rating>
             </template>
@@ -64,6 +63,8 @@
             active-color="orange-lighten-1"
             :model-value="avgAufgaben(selectedCompany)"
             class="rating"
+            readonly
+
           ></v-rating>
         </v-col>
 
@@ -78,6 +79,8 @@
             active-color="orange-lighten-1"
             :model-value="avgBetreuung(selectedCompany)"
             class="rating"
+            readonly
+
           ></v-rating>
         </v-col>
 
@@ -92,6 +95,8 @@
             active-color="orange-lighten-1"
             :model-value="avgGehalt(selectedCompany)"
             class="rating"
+            readonly
+
           ></v-rating>
         </v-col>
 
@@ -106,6 +111,8 @@
             active-color="orange-lighten-1"
             :model-value="avgGesamt(selectedCompany)"
             class="rating"
+            readonly
+
           ></v-rating>
         </v-col>
 
@@ -121,9 +128,7 @@
           ></v-btn>
         </v-card-actions>
       </v-card>
-
-
-
+      
     
     </v-dialog>
   </v-container>
@@ -136,41 +141,44 @@ export default {
   components: {},
   methods: {
     avgRating(company) {
-      var sumratings = 0;
-      for (var i = 0; i < company.ratings.length; i++) {
+      let sumratings = 0;
+      let resultRating=0;
+      for (let i = 0; i < company.ratings.length; i++) {
         sumratings +=
           company.ratings[i].aufgaben +
           company.ratings[i].betreuung +
           company.ratings[i].gehalt +
           company.ratings[i].gesamt;
-        sumratings = sumratings / 4;
+          resultRating += sumratings / 4;
+          sumratings=0;
       }
-      return sumratings / company.ratings.length;
+
+      return resultRating / company.ratings.length;
     },
     avgGehalt(company){
-      var sumratings = 0;
-      for (var i = 0; i < company.ratings.length; i++) {
+      let sumratings = 0;
+      for (let i = 0; i < company.ratings.length; i++) {
         sumratings +=company.ratings[i].gehalt;
       }
       return sumratings / company.ratings.length;
     },
     avgGesamt(company){
-      var sumratings = 0;
-      for (var i = 0; i < company.ratings.length; i++) {
+      let sumratings = 0;
+      for (let i = 0; i < company.ratings.length; i++) {
         sumratings +=company.ratings[i].gesamt;
       }
       return sumratings / company.ratings.length;
     },
     avgAufgaben(company){
-      var sumratings = 0;
-      for (var i = 0; i < company.ratings.length; i++) {
+      let sumratings = 0;
+      for (let i = 0; i < company.ratings.length; i++) {
         sumratings +=company.ratings[i].aufgaben;
       }
       return sumratings / company.ratings.length;
     },
     avgBetreuung(company){
-      var sumratings = 0;
-      for (var i = 0; i < company.ratings.length; i++) {
+      let sumratings = 0;
+      for (let i = 0; i < company.ratings.length; i++) {
         sumratings +=company.ratings[i].betreuung;
       }
       return sumratings / company.ratings.length;

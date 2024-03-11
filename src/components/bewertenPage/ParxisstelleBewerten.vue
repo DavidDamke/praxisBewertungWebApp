@@ -139,7 +139,7 @@ export default {
     createNewCompany() {
       const formData = {
         _id: this.unternehmen.toLowerCase(),
-        name: this.unternehmen,
+        name: this.unternehmen.toLowerCase(),
         ratings: [
           {
             aufgaben: this.aufgaben,
