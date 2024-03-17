@@ -1,21 +1,23 @@
-<template>
-  <v-card
-    color="grey-lighten-4"
-    flat
-    rounded="0"
-  >
-    <v-toolbar>
-      <v-text-field
-        label="Search"
-        type="text"
-        append-inner-icon="mdi-magnify"
-        @click:append-inner="onSearch"
-        v-model="searchInput"
-      ></v-text-field>
-
-    </v-toolbar>
-  </v-card></template>
-
+  <template>
+    <v-card
+      class="mx-auto"
+      color="grey-lighten-3"
+      max-width="100vH"
+    >
+      <v-card-text>
+        <v-text-field
+          append-inner-icon="mdi-magnify"
+          density="compact"
+          label="Praxisstellen Suchen"
+          variant="solo"
+          hide-details
+          single-line
+          v-model="searchInput"
+          clearable
+        ></v-text-field>
+      </v-card-text>
+    </v-card>
+  </template>
 <script>
 export default {
   data() {
@@ -29,9 +31,7 @@ export default {
     },
   },
   methods: {
-    onSearch() {
-      console.log(this.searchInput);
-    },
+  
   },
 };
 </script>

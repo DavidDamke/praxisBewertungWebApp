@@ -1,23 +1,32 @@
 <template>
-    <div>
-      <h2>Login</h2>
-      <form @submit.prevent="login">
-        <div>
-          <label for="username">Username:</label>
-          <input id="username" v-model="credentials.username" type="text">
-        </div>
-        <div>
-          <label for="password">Password:</label>
-          <input id="password" v-model="credentials.password" type="password">
-        </div>
-        <button type="submit">Login</button>
-      </form>
-      <p v-if="errorMessage">{{ errorMessage }}</p>
-      <button @click="returnLogingSelection">back</button>
+  <v-container>
+  <v-card class="mx-auto px-6 py-8" max-width="400">
+    <v-form
+        v-model="form"
+        @submit.prevent="login"
+      >
+    <h2>Login</h2>
+    <v-text-field
+      v-model="username"
+      label="Username"
+      clearable
+      :rules="[required]"
+    ></v-text-field>
+      
+    <v-text-field
+      v-model="password"
+      label="Password"
+      clearable
+      :rules="[required]"
+    ></v-text-field>
+    <v-btn type="submit" block  :disabled="!form">
+      Login
+    </v-btn>
+    </v-form>
+    </v-card>
 
-    </div>
-    
-  </template>
+    </v-container>
+</template>
   
   <script>
   import axios from 'axios';
@@ -25,21 +34,24 @@
   export default {
     data() {
       return {
-        credentials: {
-          username: '',
-          password: ''
-        },
+        form:false,
+        username: "",
+        password: "",
         errorMessage: ''
       };
     },
     methods: {
+      required (v) {
+        return !!v || 'Field is required'
+      },
       returnLogingSelection(){
           this.$router.push('/');
         },
       async login() {
         try {
-          const response = await axios.post('http://localhost:8080/login', this.credentials);
-          console.info(response);
+          console.info("Hello");
+        //  const response = await axios.post('http://localhost:8080/login', this.credentials);
+        //  console.info(response);
           this.$router.push('/mainpage');
         } catch (error) {
           this.errorMessage = 'Invalid username or password.';
