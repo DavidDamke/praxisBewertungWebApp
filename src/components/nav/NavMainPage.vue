@@ -1,30 +1,22 @@
 <template>
-  <v-container fluid >
-    <div class="navHeader">
-      <router-link
-        class="routerLink"
-        to="/mainpage"
-      >Praxissemster finden/bewerten</router-link>
-
-      <v-btn @click="toggleMenu"><v-icon>mdi-menu</v-icon></v-btn>
-    </div>
-    <div
-      v-if="menuVisible"
-      class="navMenu"
-    >
-      <router-link to="/praxisstelleBewerten">Praxisstelle bewerten</router-link>
-      <router-link to="/route2">Profil</router-link>
-      <router-link to="/route2">Logout</router-link>
-
-    </div>
-  </v-container>
+  <v-card>
+    <v-tabs centered>
+      <v-tab v-for="item in tabs" :key="item.route" :to="item.route">
+        <v-icon>{{ item.icon }}</v-icon>
+        {{ item.text }}
+      </v-tab>
+    </v-tabs>
+  </v-card>
 </template>
-
 <script>
 export default {
   data() {
     return {
       menuVisible: true,
+      tabs: [
+        { icon: 'mdi-magnify', text: 'Praxissemster finden/bewerten', route: '/mainpage' },
+        { icon: 'mdi-plus', text: 'Praxisstelle bewerten', route: '/praxisstelleBewerten' },
+      ],
     };
   },
   methods: {
@@ -36,20 +28,4 @@ export default {
 </script>
 
 <style scoped>
-div {
-  height: auto;
-  background-color: lightgray;
-}
-.routerLink {
-  text-decoration: none;
-}
-.navHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.navMenu {
-  display: flex;
-  flex-direction: column;
-}
 </style>
