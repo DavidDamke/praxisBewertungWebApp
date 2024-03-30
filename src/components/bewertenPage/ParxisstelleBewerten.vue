@@ -21,11 +21,17 @@
             required
           ></v-text-field>
         </v-col>
+        <v-col cols="12">
+          <v-text-field
+            v-model="semester"
+            label="Semester"
+            required
+            type="number"
+          ></v-text-field>
+        </v-col>
       </v-row>
 
-      <div
-        class="praxisstelleBewerten"
-      >
+      <div class="praxisstelleBewerten">
 
         <v-col
           cols="12"
@@ -98,7 +104,10 @@
 
       <v-row>
         <v-col cols="12">
-          <v-checkbox  v-model="weiterEmpfehlen" label="Würden Sie dieses Unternehmen weiterempfehlen"></v-checkbox>
+          <v-checkbox
+            v-model="weiterEmpfehlen"
+            label="Würden Sie dieses Unternehmen weiterempfehlen"
+          ></v-checkbox>
         </v-col>
       </v-row>
 
@@ -131,6 +140,7 @@ export default {
       betreuung: 0,
       aufgaben: 0,
       gesamt: 0,
+      semester: null,
       weiterEmpfehlen: false,
       formData: {},
     };
@@ -144,6 +154,7 @@ export default {
           {
             aufgaben: this.aufgaben,
             betreuung: this.betreuung,
+            semester: this.semester,
             gehalt: this.gehalt,
             gesamt: this.gesamt,
             abteilung: this.abteilung,

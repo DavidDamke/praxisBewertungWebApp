@@ -20,7 +20,7 @@
               <v-rating
                 id="rating"
                 half-increments
-                :model-value="avgRating(company)"
+                :model-value="avgGesamt(company)"
                 readonly
               ></v-rating>
             </template>
@@ -30,106 +30,129 @@
     </div>
 
     <!-- Dialog -->
-    <v-dialog
-      v-model="showDialog"
-    >
+    <v-dialog v-model="showDialog">
       <v-card>
         <v-card-title>
           {{ selectedCompany ? selectedCompany.name : '' }}
           <v-rating
-                id="rating"
-                :model-value="avgRating(selectedCompany)"
-                half-increments
-                readonly
-                active-color="orange-lighten-1"
-
-              ></v-rating>
-              <p>Anzahl Bewertungen {{ this.selectedCompany.ratings.length}}</p>
+            id="rating"
+            :model-value="avgGesamt(selectedCompany)"
+            half-increments
+            readonly
+            active-color="orange-lighten-1"
+          ></v-rating>
+          <p>Anzahl Bewertungen {{ this.selectedCompany.ratings.length}}</p>
 
         </v-card-title>
-        <v-card-text> 
-          <div
-        class="praxisstelleBewerten"
-      >
+        <v-card-text>
+          <div class="praxisstelleBewerten">
 
-        <v-col
-          cols="12"
-          sm="6"
-          md="6"
-          class="ratingContainer"
-        >
-          <p class="name">Aufgaben</p>
-          <v-rating
-            active-color="orange-lighten-1"
-            :model-value="avgAufgaben(selectedCompany)"
-            class="rating"
-            readonly
+            <v-col
+              cols="12"
+              sm="6"
+              md="6"
+              class="ratingContainer"
+            >
+              <p class="name">Aufgaben</p>
+              <v-rating
+                active-color="orange-lighten-1"
+                :model-value="avgAufgaben(selectedCompany)"
+                class="rating"
+                readonly
+                half-increments
+              ></v-rating>
+            </v-col>
 
-          ></v-rating>
-        </v-col>
+            <v-col
+              cols="12"
+              sm="6"
+              md="6"
+              class="ratingContainer"
+            >
+              <p class="name">Betreuung</p>
+              <v-rating
+                active-color="orange-lighten-1"
+                :model-value="avgBetreuung(selectedCompany)"
+                class="rating"
+                readonly
+                half-increments
+              ></v-rating>
+            </v-col>
 
-        <v-col
-          cols="12"
-          sm="6"
-          md="6"
-          class="ratingContainer"
-        >
-          <p class="name">Betreuung</p>
-          <v-rating
-            active-color="orange-lighten-1"
-            :model-value="avgBetreuung(selectedCompany)"
-            class="rating"
-            readonly
+            <v-col
+              cols="12"
+              sm="6"
+              md="6"
+              class="ratingContainer"
+            >
+              <p class="name">Gehalt</p>
+              <v-rating
+                active-color="orange-lighten-1"
+                :model-value="avgGehalt(selectedCompany)"
+                class="rating"
+                readonly
+                half-increments
+              ></v-rating>
+            </v-col>
 
-          ></v-rating>
-        </v-col>
+            <v-col
+              cols="12"
+              sm="6"
+              md="6"
+              class="ratingContainer"
+            >
+              <p class="name">Gesamt Bewertung</p>
+              <v-rating
+                active-color="orange-lighten-1"
+                :model-value="avgGesamt(selectedCompany)"
+                class="rating"
+                readonly
+                half-increments
+              ></v-rating>
+            </v-col>
 
-        <v-col
-          cols="12"
-          sm="6"
-          md="6"
-          class="ratingContainer"
-        >
-          <p class="name">Gehalt</p>
-          <v-rating
-            active-color="orange-lighten-1"
-            :model-value="avgGehalt(selectedCompany)"
-            class="rating"
-            readonly
+          </div>
 
-          ></v-rating>
-        </v-col>
+          <div class="scrollable-list">
+            <v-row class="row">
+              <v-col
+                cols="12"
+                v-for="rating in ratingsWithComments"
+                :key="rating"
+              >
+                <v-card
+                  class="mx-auto my-card"
+                  variant="flat"
+                  elevation="5"
+                >
+                  <v-card-titel>
+                    {{ rating.semester }}
+                    <v-rating
+                      active-color="orange-lighten-1"
+                      :model-value="rating.gesamt"
+                      class="rating"
+                      readonly
+                    ></v-rating>
 
-        <v-col
-          cols="12"
-          sm="6"
-          md="6"
-          class="ratingContainer"
-        >
-          <p class="name">Gesamt Bewertung</p>
-          <v-rating
-            active-color="orange-lighten-1"
-            :model-value="avgGesamt(selectedCompany)"
-            class="rating"
-            readonly
-
-          ></v-rating>
-        </v-col>
-
-      </div>
-          <p>Anzahl weiterEmpfehlen</p>
+                  </v-card-titel>
+                  <v-card-text>
+                    {{rating.kommentar}}
+                  </v-card-text>
+                </v-card>
+              </v-col>
+            </v-row>
+          </div>
         </v-card-text>
-  
+
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
             text="Close Dialog"
             @click="showDialog = false"
-          ></v-btn>
+          >Close Dialog</v-btn>
         </v-card-actions>
       </v-card>
-      
-    
+
     </v-dialog>
   </v-container>
 </template>
@@ -139,56 +162,42 @@ import axios from "axios";
 
 export default {
   components: {},
+  computed: {
+    ratingsWithComments() {
+      return this.selectedCompany.ratings.filter(
+        (rating) => rating.kommentar !== null
+      );
+    },
+  },
   methods: {
-    avgRating(company) {
-      let sumratings = 0;
-      let resultRating=0;
-      for (let i = 0; i < company.ratings.length; i++) {
-        sumratings +=
-          company.ratings[i].aufgaben +
-          company.ratings[i].betreuung +
-          company.ratings[i].gehalt +
-          company.ratings[i].gesamt;
-          resultRating += sumratings / 4;
-          sumratings=0;
-      }
-
-      return resultRating / company.ratings.length;
-    },
-    avgGehalt(company){
+    avgGehalt(company) {
       let sumratings = 0;
       for (let i = 0; i < company.ratings.length; i++) {
-        sumratings +=company.ratings[i].gehalt;
+        sumratings += company.ratings[i].gehalt;
       }
       return sumratings / company.ratings.length;
     },
-    avgGesamt(company){
+    avgGesamt(company) {
       let sumratings = 0;
       for (let i = 0; i < company.ratings.length; i++) {
-        sumratings +=company.ratings[i].gesamt;
+        sumratings += company.ratings[i].gesamt;
       }
       return sumratings / company.ratings.length;
     },
-    avgAufgaben(company){
+    avgAufgaben(company) {
       let sumratings = 0;
       for (let i = 0; i < company.ratings.length; i++) {
-        sumratings +=company.ratings[i].aufgaben;
+        sumratings += company.ratings[i].aufgaben;
       }
       return sumratings / company.ratings.length;
     },
-    avgBetreuung(company){
+    avgBetreuung(company) {
       let sumratings = 0;
       for (let i = 0; i < company.ratings.length; i++) {
-        sumratings +=company.ratings[i].betreuung;
+        sumratings += company.ratings[i].betreuung;
       }
       return sumratings / company.ratings.length;
     },
-
-
-
-
-
-
 
     showMore() {
       console.log("Card Clicked");
@@ -205,7 +214,7 @@ export default {
   },
   data() {
     return {
-        showDialog: false,
+      showDialog: false,
       selectedCompany: null, // To hold the clicked company's data
       companies: [],
       ratingValue: 0,
@@ -232,7 +241,6 @@ export default {
 };
 </script>
 <style scoped>
-
 .scrollable-list {
   max-height: 75vh; /* Adjust based on your needs */
   overflow-y: auto;
