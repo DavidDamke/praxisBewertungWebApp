@@ -242,8 +242,9 @@ export default {
 </script>
 <style scoped>
 .scrollable-list {
-  max-height: 75vh; /* Adjust based on your needs */
+  max-height: 75vh;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 .row {
   border: 1px solid black;

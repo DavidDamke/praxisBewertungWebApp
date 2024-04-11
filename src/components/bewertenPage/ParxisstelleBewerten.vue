@@ -7,11 +7,15 @@
     >
       <v-row>
         <v-col cols="12">
-          <v-text-field
+          <v-combobox
             v-model="unternehmen"
+            :items="companies"
             label="Unternehmen"
-            required
-          ></v-text-field>
+            solo
+            :clearable="true"
+            :search-input.sync="searchInput"
+          >
+          </v-combobox>
         </v-col>
 
         <v-col cols="12">
@@ -143,9 +147,15 @@ export default {
       semester: null,
       weiterEmpfehlen: false,
       formData: {},
+      companies: [],
     };
   },
   methods: {
+    customFilter(item, queryText, itemText) {
+      const searchText = queryText.toLowerCase();
+      const targetText = item.toLowerCase();
+      return targetText.includes(searchText) && searchText.length > 0;
+    },
     createNewCompany() {
       const formData = {
         _id: this.unternehmen.toLowerCase(),
@@ -176,6 +186,14 @@ export default {
         .catch((error) => console.error("Error:", error));
       this.$router.push("/mainpage");
     },
+  },
+  mounted() {
+    axios
+      .get("http://localhost:8080/getAllCompanies")
+      .then((response) => {
+        this.companies = response.data.map((companie) => companie.name);
+      })
+      .catch((error) => console.error("Error:", error));
   },
 };
 </script>
