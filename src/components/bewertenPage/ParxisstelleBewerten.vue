@@ -2,6 +2,8 @@
   <v-container>
     <h3>Hier kannst du dein Praxissemster bewerten</h3>
     <v-form
+      fast-fail
+      v-model="form"
       ref="form"
       @submit.prevent="createNewCompany"
     >
@@ -14,6 +16,7 @@
             solo
             :clearable="true"
             :search-input.sync="searchInput"
+            :rules="[required]"
           >
           </v-combobox>
         </v-col>
@@ -22,14 +25,14 @@
           <v-text-field
             v-model="abteilung"
             label="Abteilung"
-            required
+            :rules="[required]"
           ></v-text-field>
         </v-col>
         <v-col cols="12">
           <v-text-field
             v-model="semester"
             label="Semester"
-            required
+            :rules="[required]"
             type="number"
           ></v-text-field>
         </v-col>
@@ -48,6 +51,7 @@
             active-color="orange-lighten-1"
             v-model="aufgaben"
             class="rating"
+            :rules="[required]"
           ></v-rating>
         </v-col>
 
@@ -120,6 +124,7 @@
           <v-btn
             class="me-4"
             type="submit"
+            :disabled="!form"
           >
             Bewertung hinzufügen
           </v-btn>
@@ -148,9 +153,13 @@ export default {
       weiterEmpfehlen: false,
       formData: {},
       companies: [],
+      form: false,
     };
   },
   methods: {
+    required(v) {
+      return !!v || "Field is required";
+    },
     customFilter(item, queryText, itemText) {
       const searchText = queryText.toLowerCase();
       const targetText = item.toLowerCase();
