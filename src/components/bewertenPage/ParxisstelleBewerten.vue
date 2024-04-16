@@ -51,7 +51,6 @@
             active-color="orange-lighten-1"
             v-model="aufgaben"
             class="rating"
-            :rules="[required]"
           ></v-rating>
         </v-col>
 
@@ -159,11 +158,6 @@ export default {
   methods: {
     required(v) {
       return !!v || "Field is required";
-    },
-    customFilter(item, queryText, itemText) {
-      const searchText = queryText.toLowerCase();
-      const targetText = item.toLowerCase();
-      return targetText.includes(searchText) && searchText.length > 0;
     },
     createNewCompany() {
       const formData = {

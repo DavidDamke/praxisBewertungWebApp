@@ -1,16 +1,20 @@
 <template>
   <v-container>
     <div class="scrollable-list">
-      <v-row class="row">
+      <v-row
+        class="row"
+        justify="center"
+      >
         <v-col
           cols="12"
-          v-for="company in filterdCompanies"
+          sm="8"
+          md="8"
+          v-for="company in filteredCompanies"
           :key="company._id"
         >
           <v-card
-            class="mx-auto my-card"
-            variant="flat"
-            elevation="5"
+            class="mx-auto py-4"
+            variant="outlined"
             @click="showDialog = true; selectedCompany = company"
           >
             <template v-slot:title>
@@ -20,7 +24,7 @@
               <v-rating
                 id="rating"
                 half-increments
-                :model-value="avgGesamt(company)"
+                :model-value="avgRating(company,'gesamt')"
                 readonly
               ></v-rating>
             </template>
@@ -36,7 +40,7 @@
           {{ selectedCompany ? selectedCompany.name : '' }}
           <v-rating
             id="rating"
-            :model-value="avgGesamt(selectedCompany)"
+            :model-value="avgRating(selectedCompany,'gesamt')"
             half-increments
             readonly
             active-color="orange-lighten-1"
@@ -56,7 +60,7 @@
               <p class="name">Aufgaben</p>
               <v-rating
                 active-color="orange-lighten-1"
-                :model-value="avgAufgaben(selectedCompany)"
+                :model-value="avgRating(selectedCompany,'aufgaben')"
                 class="rating"
                 readonly
                 half-increments
@@ -72,7 +76,7 @@
               <p class="name">Betreuung</p>
               <v-rating
                 active-color="orange-lighten-1"
-                :model-value="avgBetreuung(selectedCompany)"
+                :model-value="avgRating(selectedCompany,'betreuung')"
                 class="rating"
                 readonly
                 half-increments
@@ -88,7 +92,7 @@
               <p class="name">Gehalt</p>
               <v-rating
                 active-color="orange-lighten-1"
-                :model-value="avgGehalt(selectedCompany)"
+                :model-value="avgRating(selectedCompany,'gehalt')"
                 class="rating"
                 readonly
                 half-increments
@@ -104,7 +108,7 @@
               <p class="name">Gesamt Bewertung</p>
               <v-rating
                 active-color="orange-lighten-1"
-                :model-value="avgGesamt(selectedCompany)"
+                :model-value="avgRating(selectedCompany,'gesamt')"
                 class="rating"
                 readonly
                 half-increments
@@ -170,41 +174,17 @@ export default {
     },
   },
   methods: {
-    avgGehalt(company) {
+    avgRating(company, atttribute) {
+      if (company.ratings.length === 0) return 0;
       let sumratings = 0;
       for (let i = 0; i < company.ratings.length; i++) {
-        sumratings += company.ratings[i].gehalt;
+        sumratings += company.ratings[i][atttribute];
       }
       return sumratings / company.ratings.length;
-    },
-    avgGesamt(company) {
-      let sumratings = 0;
-      for (let i = 0; i < company.ratings.length; i++) {
-        sumratings += company.ratings[i].gesamt;
-      }
-      return sumratings / company.ratings.length;
-    },
-    avgAufgaben(company) {
-      let sumratings = 0;
-      for (let i = 0; i < company.ratings.length; i++) {
-        sumratings += company.ratings[i].aufgaben;
-      }
-      return sumratings / company.ratings.length;
-    },
-    avgBetreuung(company) {
-      let sumratings = 0;
-      for (let i = 0; i < company.ratings.length; i++) {
-        sumratings += company.ratings[i].betreuung;
-      }
-      return sumratings / company.ratings.length;
-    },
-
-    showMore() {
-      console.log("Card Clicked");
     },
     filterCompanies() {
       console.log("Filter", this.searchValue);
-      this.filterdCompanies = this.companies.filter((document) =>
+      this.filteredCompanies = this.companies.filter((document) =>
         document.name.toLowerCase().includes(this.searchValue.toLowerCase())
       );
     },
@@ -219,7 +199,7 @@ export default {
       companies: [],
       ratingValue: 0,
       cardInfo: "",
-      filterdCompanies: [],
+      filteredCompanies: [],
     };
   },
   watch: {
@@ -228,12 +208,11 @@ export default {
       this.filterCompanies();
     },
   },
-  mounted() {
+  created() {
     axios
       .get("http://localhost:8080/getAllCompanies")
       .then((response) => {
         this.companies = response.data;
-        console.log(this.companies);
         this.filterCompanies();
       })
       .catch((error) => console.error("Error:", error));
@@ -242,18 +221,17 @@ export default {
 </script>
 <style scoped>
 .scrollable-list {
-  max-height: 75vh;
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-.row {
-  border: 1px solid black;
-}
-.my-card {
-  padding: 10px;
-}
-#companyContentList {
+  overflow-x: hidden; /* Enables horizontal scrolling */
   display: flex;
-  border: 1px solid black;
+  justify-content: center; /* Centers the row horizontally */
+}
+
+.row {
+  width: 100%; /* Ensures the row expands to fill the scrollable-list */
+  min-width: 100%; /* Minimum width to maintain structure */
+}
+
+.v-card {
+  width: 100%; /* Cards fill the column width */
 }
 </style>

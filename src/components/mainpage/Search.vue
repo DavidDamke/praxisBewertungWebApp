@@ -1,23 +1,26 @@
   <template>
-    <v-card
-      class="mx-auto"
-      color="grey-lighten-3"
-      max-width="100vH"
-    >
-      <v-card-text>
+  <v-card
+    class="mx-auto"
+    flat
+  >
+    <v-row justify="center">
+      <v-col
+        cols="12"
+        sm="8"
+        md="8"
+      >
         <v-text-field
           append-inner-icon="mdi-magnify"
-          density="compact"
           label="Praxisstellen Suchen"
-          variant="solo"
+          variant="outlined"
           hide-details
           single-line
           v-model="searchInput"
           clearable
         ></v-text-field>
-      </v-card-text>
-    </v-card>
-  </template>
+      </v-col></v-row>
+  </v-card>
+</template>
 <script>
 export default {
   data() {
@@ -30,11 +33,8 @@ export default {
       this.$emit("searchInput", newVal);
     },
   },
-  methods: {
-  
-  },
 };
 </script>
 
-<style>
+<style scoped>
 </style>
