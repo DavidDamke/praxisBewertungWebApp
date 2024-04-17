@@ -10,14 +10,14 @@
       >
         <h2>Login</h2>
         <v-text-field
-          v-model="username"
+          v-model="this.username"
           label="Username"
           clearable
           :rules="[required]"
         ></v-text-field>
 
         <v-text-field
-          v-model="password"
+          v-model="this.password"
           label="Password"
           type="password"
           clearable
@@ -43,9 +43,9 @@ export default {
   data() {
     return {
       form: false,
+      errorMessage: "",
       username: "",
       password: "",
-      errorMessage: "",
     };
   },
   methods: {
@@ -57,10 +57,13 @@ export default {
     },
     async login() {
       try {
-        console.info("Hello");
+        let credentials = {
+          username: this.username,
+          password: this.password,
+        };
         const response = await axios.post(
-          "http://localhost:8080/login2",
-          this.credentials
+          "http://localhost:8080/login",
+          credentials
         );
         console.info(response);
         this.$router.push("/mainpage");
