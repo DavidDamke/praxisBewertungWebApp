@@ -1,12 +1,12 @@
 <template>
-  <v-container>
+  <v-container  class="d-flex align-center justify-center" style="height: 100vh;">
     <v-virtual-scroll
       :items="filteredCompanies"
       height="800"
-      item-height="50"
       >
       <template v-slot:default="{ item }">
              <v-card
+
             class="mx-auto py-4"
             variant="outlined"
             @click="showDialog = true; selectedCompany = item"
@@ -29,7 +29,7 @@
     </v-virtual-scroll>
 
     <!-- Dialog -->
-    <v-dialog v-model="showDialog">
+    <v-dialog v-model="showDialog" max-width="70%">
       <v-card>
         <v-card-title>
           {{ selectedCompany ? selectedCompany.name : '' }}
@@ -217,18 +217,5 @@ export default {
 };
 </script>
 <style scoped>
-.scrollable-list {
-  overflow-x: hidden; /* Enables horizontal scrolling */
-  display: flex;
-  justify-content: center; /* Centers the row horizontally */
-}
 
-.row {
-  width: 100%; /* Ensures the row expands to fill the scrollable-list */
-  min-width: 100%; /* Minimum width to maintain structure */
-}
-
-.v-card {
-  width: 100%; /* Cards fill the column width */
-}
 </style>
