@@ -1,37 +1,32 @@
 <template>
   <v-container>
-    <div class="scrollable-list">
-      <v-row
-        class="row"
-        justify="center"
+    <v-virtual-scroll
+      :items="filteredCompanies"
+      height="800"
+      item-height="50"
       >
-        <v-col
-          cols="12"
-          sm="8"
-          md="8"
-          v-for="company in filteredCompanies"
-          :key="company._id"
-        >
-          <v-card
+      <template v-slot:default="{ item }">
+             <v-card
             class="mx-auto py-4"
             variant="outlined"
-            @click="showDialog = true; selectedCompany = company"
+            @click="showDialog = true; selectedCompany = item"
           >
             <template v-slot:title>
-              {{ company.name }}
+              {{ item.name }}
             </template>
             <template v-slot:append>
               <v-rating
                 id="rating"
                 half-increments
-                :model-value="avgRating(company,'gesamt')"
+                :model-value="avgRating(item,'gesamt')"
                 readonly
               ></v-rating>
             </template>
           </v-card>
-        </v-col>
-      </v-row>
-    </div>
+      
+      </template>
+
+    </v-virtual-scroll>
 
     <!-- Dialog -->
     <v-dialog v-model="showDialog">
@@ -116,36 +111,33 @@
             </v-col>
 
           </div>
-
-          <div class="scrollable-list">
-            <v-row class="row">
-              <v-col
-                cols="12"
-                v-for="rating in ratingsWithComments"
-                :key="rating"
-              >
-                <v-card
+          <v-virtual-scroll
+      :items="ratingsWithComments"
+      item-height="50"
+      >
+      <template v-slot:default="{ item }">
+        <v-card
                   class="mx-auto my-card"
-                  variant="flat"
-                  elevation="5"
+                  variant="outlined"
                 >
                   <v-card-titel>
-                    {{ rating.semester }}
+                    {{item.kommentar}} 
+                  </v-card-titel>
+                  <v-card-text>
+                    {{ item.semester }}
                     <v-rating
                       active-color="orange-lighten-1"
-                      :model-value="rating.gesamt"
+                      :model-value="item.gesamt"
                       class="rating"
                       readonly
                     ></v-rating>
-
-                  </v-card-titel>
-                  <v-card-text>
-                    {{rating.kommentar}}
                   </v-card-text>
                 </v-card>
-              </v-col>
-            </v-row>
-          </div>
+      
+      </template>
+
+    </v-virtual-scroll>
+      
         </v-card-text>
 
         <v-card-actions>
@@ -188,6 +180,9 @@ export default {
         document.name.toLowerCase().includes(this.searchValue.toLowerCase())
       );
     },
+    items2(){
+        return(this.companies)
+    }
   },
   props: {
     searchValue: "",
@@ -200,8 +195,10 @@ export default {
       ratingValue: 0,
       cardInfo: "",
       filteredCompanies: [],
+      items: Array.from({ length: 1000 }, (k, v) => v + 1),
     };
   },
+  
   watch: {
     // Watcher for the searchValue
     searchValue(newVal, oldVal) {
