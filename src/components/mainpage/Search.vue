@@ -1,12 +1,8 @@
   <template>
-  <v-card
-    class="mx-auto"
-    flat
-  >
-    <v-row justify="center">
-      <v-col
+    <v-container  class="d-flex align-center justify-center" >
+       <v-col
         cols="12"
-        sm="8"
+        sm="12"
         md="8"
       >
         <v-text-field
@@ -18,8 +14,8 @@
           v-model="searchInput"
           clearable
         ></v-text-field>
-      </v-col></v-row>
-  </v-card>
+      </v-col>
+    </v-container>
 </template>
 <script>
 export default {

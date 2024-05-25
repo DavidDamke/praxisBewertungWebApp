@@ -1,5 +1,11 @@
 <template>
-  <v-container>
+  <v-container class="d-flex align-center justify-center" style="height:90%;">    
+    
+    
+    <v-col cols="12"
+          sm="12"
+          md="8">
+
     <h3>Hier kannst du dein Praxissemster bewerten</h3>
     <v-form
       fast-fail
@@ -130,6 +136,7 @@
         </v-col>
       </v-row>
     </v-form>
+  </v-col>
   </v-container>
 
 </template>

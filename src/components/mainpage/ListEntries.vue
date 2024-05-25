@@ -1,13 +1,16 @@
 <template>
-  <v-container  class="d-flex align-center justify-center" style="height: 100vh;">
+  <v-container  class="d-flex align-center justify-center" style="height:90%;">
+
+    <v-col cols="12"
+              sm="12"
+              md="8">
     <v-virtual-scroll
       :items="filteredCompanies"
       height="800"
       >
       <template v-slot:default="{ item }">
              <v-card
-
-            class="mx-auto py-4"
+            class="my-card"
             variant="outlined"
             @click="showDialog = true; selectedCompany = item"
           >
@@ -27,21 +30,20 @@
       </template>
 
     </v-virtual-scroll>
-
+  </v-col>
     <!-- Dialog -->
-    <v-dialog v-model="showDialog" max-width="70%">
+    <v-dialog v-model="showDialog" max-width="50%">
       <v-card>
         <v-card-title>
-          {{ selectedCompany ? selectedCompany.name : '' }}
-          <v-rating
-            id="rating"
-            :model-value="avgRating(selectedCompany,'gesamt')"
-            half-increments
-            readonly
-            active-color="orange-lighten-1"
-          ></v-rating>
-          <p>Anzahl Bewertungen {{ this.selectedCompany.ratings.length}}</p>
-
+            {{ selectedCompany ? selectedCompany.name : '' }}
+            <v-rating
+              id="rating"
+              :model-value="avgRating(selectedCompany,'gesamt')"
+              half-increments
+              readonly
+              active-color="orange-lighten-1"
+            ></v-rating>
+            <p>Anzahl Bewertungen {{ this.selectedCompany.ratings.length}}</p>
         </v-card-title>
         <v-card-text>
           <div class="praxisstelleBewerten">
@@ -113,24 +115,31 @@
           </div>
           <v-virtual-scroll
       :items="ratingsWithComments"
-      item-height="50"
+      max-height="400"
       >
       <template v-slot:default="{ item }">
         <v-card
-                  class="mx-auto my-card"
-                  variant="outlined"
+                  class="my-card"
+                  variant="outlined" 
                 >
+                <v-card-item>
                   <v-card-titel>
-                    {{item.kommentar}} 
-                  </v-card-titel>
-                  <v-card-text>
-                    {{ item.semester }}
                     <v-rating
                       active-color="orange-lighten-1"
                       :model-value="item.gesamt"
                       class="rating"
                       readonly
                     ></v-rating>
+                    {{ item.gesamt }}/5
+                  </v-card-titel >
+                  <v-card-subtitle>
+                    Semester: {{ item.semester }}
+                    WeiterEmpfehlung: {{ item.weiterEmpfehlen }}
+                  </v-card-subtitle>
+                </v-card-item>
+                <v-divider></v-divider>
+                  <v-card-text>
+                    {{item.kommentar}} 
                   </v-card-text>
                 </v-card>
       
@@ -195,7 +204,6 @@ export default {
       ratingValue: 0,
       cardInfo: "",
       filteredCompanies: [],
-      items: Array.from({ length: 1000 }, (k, v) => v + 1),
     };
   },
   
@@ -217,5 +225,11 @@ export default {
 };
 </script>
 <style scoped>
-
+v-card-item{
+  display: inline;
+}
+.my-card {
+  margin-bottom: 5px;      /* Margin around each card */
+  padding: 20px;     /* Padding inside each card */
+}
 </style>
