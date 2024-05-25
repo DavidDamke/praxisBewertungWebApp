@@ -5,10 +5,13 @@
         <v-icon>{{ item.icon }}</v-icon>
         {{ item.text }}
       </v-tab>
+      <button @click="logout"> Logout</button> 
     </v-tabs>
   </v-card>
 </template>
 <script>
+import { mapActions } from 'vuex';
+
 export default {
   data() {
     return {
@@ -22,6 +25,16 @@ export default {
   methods: {
     toggleMenu() {
       this.menuVisible = !this.menuVisible;
+    },
+    ...mapActions(['logoutAction']),
+    logout() {
+      this.logoutAction()
+        .then(() => {
+          this.$router.push('/login'); // Redirect to login page or another page
+        })
+        .catch(error => {
+          console.error('Logout error:', error);
+        });
     },
   },
 };

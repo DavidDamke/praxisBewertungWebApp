@@ -24,7 +24,7 @@ export default createStore({
         console.error('Login failed:', error.response.data.message);
       }
     },
-    async logout({ commit }) {
+    async logoutAction({ commit }) {
       try {
         const response = await axios.post('http://localhost:8080/logout');
         if (response.status === 200) {
