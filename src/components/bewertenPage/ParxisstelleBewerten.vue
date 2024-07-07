@@ -32,7 +32,7 @@
           <v-text-field
             v-model="semester"
             label="Semester"
-            :rules="[required]"
+            :rules="[required ,rules.counter]"
             type="number"
           ></v-text-field>
         </v-col>
@@ -153,6 +153,9 @@ export default {
       formData: {},
       companies: [],
       form: false,
+      rules: {
+        counter: (value) => value.length <= 2,
+      },
     };
   },
   methods: {

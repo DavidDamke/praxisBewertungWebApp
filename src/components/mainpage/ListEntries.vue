@@ -1,35 +1,40 @@
 <template>
-  <v-container  class="d-flex align-center justify-center" style="height: 100vh;">
+  <v-container
+    class="d-flex align-center justify-center"
+    style="height: 100vh;"
+  >
     <v-virtual-scroll
       :items="filteredCompanies"
       height="800"
-      >
+    >
       <template v-slot:default="{ item }">
-             <v-card
+        <v-card
+          class="mx-auto py-4"
+          variant="outlined"
+          @click="showDialog = true; selectedCompany = item"
+        >
+          <template v-slot:title>
+            {{ item.name }}
+          </template>
+          <template v-slot:append>
+            <v-rating
+              id="rating"
+              half-increments
+              :model-value="avgRating(item,'gesamt')"
+              readonly
+            ></v-rating>
+          </template>
+        </v-card>
 
-            class="mx-auto py-4"
-            variant="outlined"
-            @click="showDialog = true; selectedCompany = item"
-          >
-            <template v-slot:title>
-              {{ item.name }}
-            </template>
-            <template v-slot:append>
-              <v-rating
-                id="rating"
-                half-increments
-                :model-value="avgRating(item,'gesamt')"
-                readonly
-              ></v-rating>
-            </template>
-          </v-card>
-      
       </template>
 
     </v-virtual-scroll>
 
     <!-- Dialog -->
-    <v-dialog v-model="showDialog" max-width="70%">
+    <v-dialog
+      v-model="showDialog"
+      max-width="70%"
+    >
       <v-card>
         <v-card-title>
           {{ selectedCompany ? selectedCompany.name : '' }}
@@ -112,32 +117,32 @@
 
           </div>
           <v-virtual-scroll
-      :items="ratingsWithComments"
-      item-height="50"
-      >
-      <template v-slot:default="{ item }">
-        <v-card
-                  class="mx-auto my-card"
-                  variant="outlined"
-                >
-                  <v-card-titel>
-                    {{item.kommentar}} 
-                  </v-card-titel>
-                  <v-card-text>
-                    {{ item.semester }}
-                    <v-rating
-                      active-color="orange-lighten-1"
-                      :model-value="item.gesamt"
-                      class="rating"
-                      readonly
-                    ></v-rating>
-                  </v-card-text>
-                </v-card>
-      
-      </template>
+            :items="ratingsWithComments"
+            item-height="50"
+          >
+            <template v-slot:default="{ item }">
+              <v-card
+                class="mx-auto my-card"
+                variant="outlined"
+              >
+                <v-card-titel>
+                  {{item.kommentar}}
+                </v-card-titel>
+                <v-card-text>
+                  {{ item.semester }}
+                  <v-rating
+                    active-color="orange-lighten-1"
+                    :model-value="item.gesamt"
+                    class="rating"
+                    readonly
+                  ></v-rating>
+                </v-card-text>
+              </v-card>
 
-    </v-virtual-scroll>
-      
+            </template>
+
+          </v-virtual-scroll>
+
         </v-card-text>
 
         <v-card-actions>
@@ -180,9 +185,6 @@ export default {
         document.name.toLowerCase().includes(this.searchValue.toLowerCase())
       );
     },
-    items2(){
-        return(this.companies)
-    }
   },
   props: {
     searchValue: "",
@@ -198,7 +200,7 @@ export default {
       items: Array.from({ length: 1000 }, (k, v) => v + 1),
     };
   },
-  
+
   watch: {
     // Watcher for the searchValue
     searchValue(newVal, oldVal) {
@@ -217,5 +219,4 @@ export default {
 };
 </script>
 <style scoped>
-
 </style>
