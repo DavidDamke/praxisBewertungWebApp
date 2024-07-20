@@ -7,7 +7,7 @@ import store from './store'; // Import the Vuex store
 
 
 const routes = [
-    { path: '/', name:'Login', redirect: '/login' },     // Redirect root path to /login
+    { path: '/', name:'Root', redirect: '/login' },     // Redirect root path to /login
     { path: '/login',name:'Login', component: loginVue},
     { path: '/praxisstelleBewerten', component: ParxisstelleBewertenVue, meta: {requiresAuth:true}},
 

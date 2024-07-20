@@ -13,16 +13,19 @@ export default createStore({
   },
   actions: {
     async loginAction({ commit }, credentials) {
-      console.log("in storejs");
-      try {
-        const response = await axios.post('http://localhost:8080/login', credentials);
-        if (response.status === 200) {
           commit('setAuthentication', true);
+
+      
+      // console.log("in storejs");
+      // try {
+      //   const response = await axios.post('http://localhost:8080/login', credentials);
+      //   if (response.status === 200) {
+      //     commit('setAuthentication', true);
         
-        }
-      } catch (error) {
-        console.error('Login failed:', error.response.data.message);
-      }
+      //   }
+      // } catch (error) {
+      //   console.error('Login failed:', error.response.data.message);
+      // }
     },
     async logoutAction({ commit }) {
       try {

@@ -1,142 +1,147 @@
 <template>
-  <v-container class="d-flex align-center justify-center" style="height:90%;">    
-    
-    
-    <v-col cols="12"
-          sm="12"
-          md="8">
+  <v-container
+    class="d-flex align-center justify-center"
+    style="height:90%;"
+  >
 
-    <h3>Hier kannst du dein Praxissemster bewerten</h3>
-    <v-form
-      fast-fail
-      v-model="form"
-      ref="form"
-      @submit.prevent="createNewCompany"
+    <v-col
+      cols="12"
+      sm="12"
+      md="8"
     >
-      <v-row>
-        <v-col cols="12">
-          <v-combobox
-            v-model="unternehmen"
-            :items="companies"
-            label="Unternehmen"
-            solo
-            :clearable="true"
-            :search-input.sync="searchInput"
-            :rules="[required]"
+
+      <h3>Hier kannst du dein Praxissemester bewerten</h3>
+      <v-form
+        fast-fail
+        v-model="form"
+        ref="form"
+        @submit.prevent="createNewCompany"
+      >
+        <v-row>
+          <v-col cols="12">
+            <v-combobox
+              v-model="unternehmen"
+              :items="companies"
+              label="Unternehmen"
+              solo
+              :clearable="true"
+              :search-input.sync="searchInput"
+              :rules="[required]"
+            >
+            </v-combobox>
+          </v-col>
+
+          <v-col cols="12">
+            <v-text-field
+              v-model="abteilung"
+              label="Abteilung"
+              :rules="[required]"
+            ></v-text-field>
+          </v-col>
+          <v-col cols="12">
+            <v-text-field
+              v-model="semester"
+              label="Semester"
+              :rules="[required]"
+              type="number"
+            ></v-text-field>
+          </v-col>
+        </v-row>
+
+        <div class="praxisstelleBewerten">
+
+          <v-col
+            cols="12"
+            sm="6"
+            md="6"
+            class="ratingContainer"
           >
-          </v-combobox>
-        </v-col>
+            <p class="name">Aufgaben</p>
+            <v-rating
+              active-color="orange-lighten-1"
+              v-model="aufgaben"
+              class="rating"
+            ></v-rating>
+          </v-col>
 
-        <v-col cols="12">
-          <v-text-field
-            v-model="abteilung"
-            label="Abteilung"
-            :rules="[required]"
-          ></v-text-field>
-        </v-col>
-        <v-col cols="12">
-          <v-text-field
-            v-model="semester"
-            label="Semester"
-            :rules="[required]"
-            type="number"
-          ></v-text-field>
-        </v-col>
-      </v-row>
-
-      <div class="praxisstelleBewerten">
-
-        <v-col
-          cols="12"
-          sm="6"
-          md="6"
-          class="ratingContainer"
-        >
-          <p class="name">Aufgaben</p>
-          <v-rating
-            active-color="orange-lighten-1"
-            v-model="aufgaben"
-            class="rating"
-          ></v-rating>
-        </v-col>
-
-        <v-col
-          cols="12"
-          sm="6"
-          md="6"
-          class="ratingContainer"
-        >
-          <p class="name">Betreuung</p>
-          <v-rating
-            active-color="orange-lighten-1"
-            v-model="betreuung"
-            class="rating"
-          ></v-rating>
-        </v-col>
-
-        <v-col
-          cols="12"
-          sm="6"
-          md="6"
-          class="ratingContainer"
-        >
-          <p class="name">Gehalt</p>
-          <v-rating
-            active-color="orange-lighten-1"
-            v-model="gehalt"
-            class="rating"
-          ></v-rating>
-        </v-col>
-
-        <v-col
-          cols="12"
-          sm="6"
-          md="6"
-          class="ratingContainer"
-        >
-          <p class="name">Gesamt Bewertung</p>
-          <v-rating
-            active-color="orange-lighten-1"
-            v-model="gesamt"
-            class="rating"
-          ></v-rating>
-        </v-col>
-
-      </div>
-
-      <v-row>
-        <v-col cols="12">
-          <v-textarea
-            v-model="kommentar"
-            counter
-            label="Kommentar"
-            single-line
-          ></v-textarea>
-        </v-col>
-      </v-row>
-
-      <v-row>
-        <v-col cols="12">
-          <v-checkbox
-            v-model="weiterEmpfehlen"
-            label="Würden Sie dieses Unternehmen weiterempfehlen"
-          ></v-checkbox>
-        </v-col>
-      </v-row>
-
-      <v-row>
-        <v-col cols="12">
-          <v-btn
-            class="me-4"
-            type="submit"
-            :disabled="!form"
+          <v-col
+            cols="12"
+            sm="6"
+            md="6"
+            class="ratingContainer"
           >
-            Bewertung hinzufügen
-          </v-btn>
-        </v-col>
-      </v-row>
-    </v-form>
-  </v-col>
+            <p class="name">Betreuung</p>
+            <v-rating
+              active-color="orange-lighten-1"
+              v-model="betreuung"
+              class="rating"
+            ></v-rating>
+          </v-col>
+
+          <v-col
+            cols="12"
+            sm="6"
+            md="6"
+            class="ratingContainer"
+          >
+            <p class="name">Gehalt</p>
+            <v-rating
+              active-color="orange-lighten-1"
+              v-model="gehalt"
+              class="rating"
+            ></v-rating>
+          </v-col>
+
+          <v-col
+            cols="12"
+            sm="6"
+            md="6"
+            class="ratingContainer"
+          >
+            <p class="name">Gesamt</p>
+            <v-rating
+              active-color="orange-lighten-1"
+              v-model="gesamt"
+              class="rating"
+            ></v-rating>
+          </v-col>
+
+        </div>
+
+        <v-row>
+          <v-col cols="12">
+            <v-textarea
+              v-model="kommentar"
+              counter
+              label="Kommentar"
+              single-line
+              maxlength="500"
+            ></v-textarea>
+          </v-col>
+        </v-row>
+
+        <v-row>
+          <v-col cols="12">
+            <v-checkbox
+              v-model="weiterEmpfehlen"
+              label="Ich empfehle das Unternehmen weiter"
+            ></v-checkbox>
+          </v-col>
+        </v-row>
+
+        <v-row>
+          <v-col cols="12">
+            <v-btn
+              class="me-4"
+              type="submit"
+              :disabled="!form"
+            >
+              Bewertung hinzufügen
+            </v-btn>
+          </v-col>
+        </v-row>
+      </v-form>
+    </v-col>
   </v-container>
 
 </template>
@@ -164,7 +169,7 @@ export default {
   },
   methods: {
     required(v) {
-      return !!v || "Field is required";
+      return !!v || "Dieses Feld ist erforderlich";
     },
     createNewCompany() {
       const formData = {
@@ -212,6 +217,7 @@ export default {
 .ratingContainer {
   display: flex;
   align-items: center;
+  height: 40px;
 }
 .name {
   flex: 1;

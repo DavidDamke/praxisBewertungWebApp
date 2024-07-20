@@ -4,6 +4,12 @@
       class="mx-auto px-6 py-8"
       max-width="400"
     >
+      <v-alert
+        type="info"
+        class="mb-4 highlighted-text-alert"
+      >
+        Bitte verwende deine RWU-Zugangsdaten wie für das LSF etc.
+      </v-alert>
       <v-form
         v-model="form"
         @submit.prevent="login"
@@ -11,14 +17,14 @@
         <h2>Login</h2>
         <v-text-field
           v-model="username"
-          label="Username"
+          label="RWU-Benutzername"
           clearable
           :rules="[required]"
         ></v-text-field>
 
         <v-text-field
           v-model="password"
-          label="Password"
+          label="Passwort"
           type="password"
           clearable
           :rules="[required]"
@@ -37,7 +43,7 @@
 </template>
   
   <script>
-import { mapActions } from 'vuex';
+import { mapActions } from "vuex";
 import axios from "axios";
 
 export default {
@@ -51,36 +57,20 @@ export default {
   },
   methods: {
     required(v) {
-      return !!v || "Field is required";
+      return !!v || "Dieses Feld ist erforderlich";
     },
-    ...mapActions(['loginAction']),
-    
+    ...mapActions(["loginAction"]),
+
     login() {
       console.log("in Login function");
       this.loginAction({ username: this.username, password: this.password })
         .then(() => {
           this.$router.push("/mainpage");
         })
-        .catch(error => {
-          console.error('Login error:', error);
+        .catch((error) => {
+          console.error("Login error:", error);
         });
     },
-    // async login() {
-    //   try {
-    //     let credentials = {
-    //       username: this.username,
-    //       password: this.password,
-    //     };
-    //     const response = await axios.post(
-    //       "http://localhost:8080/login",
-    //       credentials
-    //     );
-    //     console.info(response);
-    //     this.$router.push("/mainpage");
-    //   } catch (error) {
-    //     this.errorMessage = "Invalid username or password.";
-    //   }
-    // },
   },
 };
 </script>
