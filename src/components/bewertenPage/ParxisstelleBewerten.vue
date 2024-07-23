@@ -65,6 +65,7 @@
     active-color="orange-lighten-1"
     v-model="aufgaben"
     class="rating"
+    clearable
   ></v-rating>
 </v-col>
 
@@ -79,6 +80,7 @@
     active-color="orange-lighten-1"
     v-model="betreuung"
     class="rating"
+    clearable
   ></v-rating>
 </v-col>
 
@@ -93,6 +95,7 @@
     active-color="orange-lighten-1"
     v-model="gehalt"
     class="rating"
+    clearable
   ></v-rating>
 </v-col>
 
@@ -107,6 +110,7 @@
     active-color="orange-lighten-1"
     v-model="gesamt"
     class="rating"
+    clearable
   ></v-rating>
 </v-col>
 
