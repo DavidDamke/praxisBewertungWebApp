@@ -54,74 +54,29 @@
           ></v-rating>
         </v-card-title>
         <v-card-text>
+
+
           <div class="praxisstelleBewerten">
-
-            <v-col
-              cols="12"
-              sm="6"
-              md="6"
-              class="ratingContainer"
-            >
-              <p class="name">Aufgaben</p>
+          <v-row
+            v-for="(rating, index) in ratings"
+            :key="index"
+            class="ratingContainer"
+          >
+            <v-col cols="12" class="ratingContent">
+              <p class="name">{{ rating.name }}</p>
               <v-rating
                 active-color="orange-lighten-1"
-                :model-value="avgRating(selectedCompany,'aufgaben')"
+                :model-value="avgRating(selectedCompany,rating.name.toLowerCase())"
                 class="rating"
                 readonly
-                half-increments
               ></v-rating>
             </v-col>
+          </v-row>
+           </div>
 
-            <v-col
-              cols="12"
-              sm="6"
-              md="6"
-              class="ratingContainer"
-            >
-              <p class="name">Betreuung</p>
-              <v-rating
-                active-color="orange-lighten-1"
-                :model-value="avgRating(selectedCompany,'betreuung')"
-                class="rating"
-                readonly
-                half-increments
-              ></v-rating>
-            </v-col>
 
-            <v-col
-              cols="12"
-              sm="6"
-              md="6"
-              class="ratingContainer"
-            >
-              <p class="name">Gehalt</p>
-              <v-rating
-                active-color="orange-lighten-1"
-                :model-value="avgRating(selectedCompany,'gehalt')"
-                class="rating"
-                readonly
-                half-increments
-              ></v-rating>
-            </v-col>
 
-            <v-col
-              cols="12"
-              sm="6"
-              md="6"
-              class="ratingContainer"
-            >
-              <p class="name">Gesamt</p>
-              <v-rating
-                active-color="orange-lighten-1"
-                :model-value="avgRating(selectedCompany,'gesamt')"
-                class="rating"
-                readonly
-                half-increments
-              ></v-rating>
-            </v-col>
-
-          </div>
-          <p>Anzahl Bewertungen: {{ this.selectedCompany.ratings.length}}</p>
+          <p style="font-size: small;"> Anzahl Bewertungen: {{ this.selectedCompany.ratings.length}}</p>
 
           <v-virtual-scroll
             :items="this.selectedCompany.ratings"
@@ -147,10 +102,12 @@
                     Weiterempfehlung: {{item.weiterEmpfehlen ? "Ja" : "Nein"}}
                   </v-card-subtitle>
                 </v-card-item>
-                <v-divider></v-divider>
+                <div v-if="item.kommentar!=null">
+                <v-divider ></v-divider>
                 <v-card-text>
                   {{item.kommentar}}
                 </v-card-text>
+              </div>
               </v-card>
 
             </template>
@@ -185,14 +142,15 @@ export default {
     },
   },
   methods: {
-    avgRating(company, atttribute) {
+    avgRating(company, attribute) {
       if (company.ratings.length === 0) return 0;
       let sumratings = 0;
       for (let i = 0; i < company.ratings.length; i++) {
-        sumratings += company.ratings[i][atttribute];
+        sumratings += company.ratings[i][attribute];
       }
       return sumratings / company.ratings.length;
     },
+
     filterCompanies() {
       console.log("Filter", this.searchValue);
       this.filteredCompanies = this.companies.filter((document) =>
@@ -208,6 +166,12 @@ export default {
   },
   data() {
     return {
+      ratings: [
+        { name: 'Aufgaben'},
+        { name: 'Betreuung'},
+        { name: 'Gehalt'},
+        { name: 'Gesamt'},
+      ],
       showDialog: false,
       selectedCompany: null, // To hold the clicked company's data
       companies: [],
@@ -235,6 +199,22 @@ export default {
 };
 </script>
 <style scoped>
+.ratingContainer {
+  margin-bottom: 16px;
+  height: 30px;
+}
+.ratingContent {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+.name {
+  min-width: 100px;
+}
+.rating {
+  margin-left: 16px;
+}
+
 v-card-item {
   display: inline;
 }

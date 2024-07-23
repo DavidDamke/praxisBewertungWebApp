@@ -39,75 +39,78 @@
             ></v-text-field>
           </v-col>
           <v-col cols="12">
-            <v-text-field
+            <v-combobox
               v-model="semester"
+              :items="semesterliste"
               label="Semester"
+              solo
+              :clearable="true"
+              :search-input.sync="searchInput"
               :rules="[required]"
-              type="number"
-            ></v-text-field>
+            >
+            </v-combobox>
+          
           </v-col>
         </v-row>
-
         <div class="praxisstelleBewerten">
 
-          <v-col
-            cols="12"
-            sm="6"
-            md="6"
-            class="ratingContainer"
-          >
-            <p class="name">Aufgaben</p>
-            <v-rating
-              active-color="orange-lighten-1"
-              v-model="aufgaben"
-              class="rating"
-            ></v-rating>
-          </v-col>
+<v-col
+  cols="12"
+  sm="6"
+  md="6"
+  class="ratingContainer"
+>
+  <p class="name">Aufgaben</p>
+  <v-rating
+    active-color="orange-lighten-1"
+    v-model="aufgaben"
+    class="rating"
+  ></v-rating>
+</v-col>
 
-          <v-col
-            cols="12"
-            sm="6"
-            md="6"
-            class="ratingContainer"
-          >
-            <p class="name">Betreuung</p>
-            <v-rating
-              active-color="orange-lighten-1"
-              v-model="betreuung"
-              class="rating"
-            ></v-rating>
-          </v-col>
+<v-col
+  cols="12"
+  sm="6"
+  md="6"
+  class="ratingContainer"
+>
+  <p class="name">Betreuung</p>
+  <v-rating
+    active-color="orange-lighten-1"
+    v-model="betreuung"
+    class="rating"
+  ></v-rating>
+</v-col>
 
-          <v-col
-            cols="12"
-            sm="6"
-            md="6"
-            class="ratingContainer"
-          >
-            <p class="name">Gehalt</p>
-            <v-rating
-              active-color="orange-lighten-1"
-              v-model="gehalt"
-              class="rating"
-            ></v-rating>
-          </v-col>
+<v-col
+  cols="12"
+  sm="6"
+  md="6"
+  class="ratingContainer"
+>
+  <p class="name">Gehalt</p>
+  <v-rating
+    active-color="orange-lighten-1"
+    v-model="gehalt"
+    class="rating"
+  ></v-rating>
+</v-col>
 
-          <v-col
-            cols="12"
-            sm="6"
-            md="6"
-            class="ratingContainer"
-          >
-            <p class="name">Gesamt</p>
-            <v-rating
-              active-color="orange-lighten-1"
-              v-model="gesamt"
-              class="rating"
-            ></v-rating>
-          </v-col>
+<v-col
+  cols="12"
+  sm="6"
+  md="6"
+  class="ratingContainer"
+>
+  <p class="name">Gesamt</p>
+  <v-rating
+    active-color="orange-lighten-1"
+    v-model="gesamt"
+    class="rating"
+  ></v-rating>
+</v-col>
 
-        </div>
-
+</div>
         <v-row>
           <v-col cols="12">
             <v-textarea
@@ -152,14 +155,32 @@ import axios from "axios";
 export default {
   data() {
     return {
-      buttonPressed: true,
-      kommentar: null,
-      unternehmen: "",
-      abteilung: "",
+      semesterliste: [
+        "SS16",
+        "WS16/17",
+        "SS17",
+        "WS17/18",
+        "SS18",
+        "WS18/19",
+        "SS19",
+        "WS19/20",
+        "SS20",
+        "WS20/21",
+        "SS21",
+        "WS21/22",
+        "SS22",
+        "WS22/23",
+        "SS23",
+        "WS23/24"
+      ],
       gehalt: 0,
       betreuung: 0,
       aufgaben: 0,
       gesamt: 0,
+      buttonPressed: true,
+      kommentar: null,
+      unternehmen: "",
+      abteilung: "",
       semester: null,
       weiterEmpfehlen: false,
       formData: {},
@@ -213,7 +234,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .ratingContainer {
   display: flex;
   align-items: center;
@@ -227,3 +248,12 @@ export default {
   flex: none;
 }
 </style>
+
+
+<!-- .name {
+  flex: 1;
+  min-width: 100px;
+}
+.rating {
+  flex: none;
+} -->
