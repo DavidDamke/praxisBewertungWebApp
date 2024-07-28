@@ -41,37 +41,32 @@
 
   </v-container>
 </template>
-  
-  <script>
-import { mapActions } from "vuex";
-import axios from "axios";
+
+<script>
+import { mapActions } from 'vuex';
 
 export default {
   data() {
     return {
       form: false,
-      errorMessage: "",
-      username: "",
-      password: "",
+      errorMessage: '',
+      username: '',
+      password: '',
     };
   },
   methods: {
     required(v) {
-      return !!v || "Dieses Feld ist erforderlich";
+      return !!v || 'Dieses Feld ist erforderlich';
     },
-    ...mapActions(["loginAction"]),
-
-    login() {
-      console.log("in Login function");
-      this.loginAction({ username: this.username, password: this.password })
-        .then(() => {
-          this.$router.push("/mainpage");
-        })
-        .catch((error) => {
-          console.error("Login error:", error);
-        });
+    ...mapActions(['loginAction']),
+    async login() {
+      try {
+        await this.loginAction({ username: this.username, password: this.password });
+        this.$router.push('/mainpage');
+      } catch (error) {
+        console.error('Login error:', error);
+      }
     },
   },
 };
 </script>
-  

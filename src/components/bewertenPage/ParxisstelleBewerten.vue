@@ -1,160 +1,127 @@
 <template>
-  <v-container
-    class="d-flex align-center justify-center"
-    style="height:90%;"
-  >
-
-    <v-col
-      cols="12"
-      sm="12"
-      md="8"
+  <div>
+    <v-container
+      v-if="user && user.anzahlBewertungen < 1"
+      class="d-flex align-center justify-center"
+      style="height:90%;"
     >
-
-      <h3>Hier kannst du dein Praxissemester bewerten</h3>
-      <v-form
-        fast-fail
-        v-model="form"
-        ref="form"
-        @submit.prevent="createNewCompany"
-      >
-        <v-row>
-          <v-col cols="12">
-            <v-combobox
-              v-model="unternehmen"
-              :items="companies"
-              label="Unternehmen"
-              solo
-              :clearable="true"
-              :search-input.sync="searchInput"
-              :rules="[required]"
-            >
-            </v-combobox>
-          </v-col>
-
-          <v-col cols="12">
-            <v-text-field
-              v-model="abteilung"
-              label="Abteilung"
-              :rules="[required]"
-            ></v-text-field>
-          </v-col>
-          <v-col cols="12">
-            <v-combobox
-              v-model="semester"
-              :items="semesterliste"
-              label="Semester"
-              solo
-              :clearable="true"
-              :search-input.sync="searchInput"
-              :rules="[required]"
-            >
-            </v-combobox>
-          
-          </v-col>
-        </v-row>
-        <div class="praxisstelleBewerten">
-
-<v-col
-  cols="12"
-  sm="6"
-  md="6"
-  class="ratingContainer"
->
-  <p class="name">Aufgaben</p>
-  <v-rating
-    active-color="orange-lighten-1"
-    v-model="aufgaben"
-    class="rating"
-    clearable
-  ></v-rating>
-</v-col>
-
-<v-col
-  cols="12"
-  sm="6"
-  md="6"
-  class="ratingContainer"
->
-  <p class="name">Betreuung</p>
-  <v-rating
-    active-color="orange-lighten-1"
-    v-model="betreuung"
-    class="rating"
-    clearable
-  ></v-rating>
-</v-col>
-
-<v-col
-  cols="12"
-  sm="6"
-  md="6"
-  class="ratingContainer"
->
-  <p class="name">Gehalt</p>
-  <v-rating
-    active-color="orange-lighten-1"
-    v-model="gehalt"
-    class="rating"
-    clearable
-  ></v-rating>
-</v-col>
-
-<v-col
-  cols="12"
-  sm="6"
-  md="6"
-  class="ratingContainer"
->
-  <p class="name">Gesamt</p>
-  <v-rating
-    active-color="orange-lighten-1"
-    v-model="gesamt"
-    class="rating"
-    clearable
-  ></v-rating>
-</v-col>
-
-</div>
-        <v-row>
-          <v-col cols="12">
-            <v-textarea
-              v-model="kommentar"
-              counter
-              label="Kommentar"
-              single-line
-              maxlength="500"
-            ></v-textarea>
-          </v-col>
-        </v-row>
-
-        <v-row>
-          <v-col cols="12">
-            <v-checkbox
-              v-model="weiterEmpfehlen"
-              label="Ich empfehle das Unternehmen weiter"
-            ></v-checkbox>
-          </v-col>
-        </v-row>
-
-        <v-row>
-          <v-col cols="12">
-            <v-btn
-              class="me-4"
-              type="submit"
-              :disabled="!form"
-            >
-              Bewertung hinzufügen
-            </v-btn>
-          </v-col>
-        </v-row>
-      </v-form>
-    </v-col>
-  </v-container>
-
+      <v-col cols="12" sm="12" md="8">
+        <h3>Hier kannst du dein Praxissemester bewerten</h3>
+        <v-form
+          fast-fail
+          v-model="form"
+          ref="form"
+          @submit.prevent="createNewCompany"
+        >
+          <v-row>
+            <v-col cols="12">
+              <v-combobox
+                v-model="unternehmen"
+                :items="companies"
+                label="Unternehmen"
+                solo
+                :clearable="true"
+                :search-input.sync="searchInput"
+                :rules="[required]"
+              >
+              </v-combobox>
+            </v-col>
+            <v-col cols="12">
+              <v-text-field
+                v-model="abteilung"
+                label="Abteilung"
+                :rules="[required]"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12">
+              <v-combobox
+                v-model="semester"
+                :items="semesterliste"
+                label="Semester"
+                solo
+                :clearable="true"
+                :search-input.sync="searchInput"
+                :rules="[required]"
+              >
+              </v-combobox>
+            </v-col>
+          </v-row>
+          <div class="praxisstelleBewerten">
+            <v-col cols="12" sm="6" md="6" class="ratingContainer">
+              <p class="name">Aufgaben</p>
+              <v-rating
+                active-color="orange-lighten-1"
+                v-model="aufgaben"
+                class="rating"
+                clearable
+              ></v-rating>
+            </v-col>
+            <v-col cols="12" sm="6" md="6" class="ratingContainer">
+              <p class="name">Betreuung</p>
+              <v-rating
+                active-color="orange-lighten-1"
+                v-model="betreuung"
+                class="rating"
+                clearable
+              ></v-rating>
+            </v-col>
+            <v-col cols="12" sm="6" md="6" class="ratingContainer">
+              <p class="name">Gehalt</p>
+              <v-rating
+                active-color="orange-lighten-1"
+                v-model="gehalt"
+                class="rating"
+                clearable
+              ></v-rating>
+            </v-col>
+            <v-col cols="12" sm="6" md="6" class="ratingContainer">
+              <p class="name">Gesamt</p>
+              <v-rating
+                active-color="orange-lighten-1"
+                v-model="gesamt"
+                class="rating"
+                clearable
+              ></v-rating>
+            </v-col>
+          </div>
+          <v-row>
+            <v-col cols="12">
+              <v-textarea
+                v-model="kommentar"
+                counter
+                label="Kommentar"
+                single-line
+                maxlength="500"
+              ></v-textarea>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="12">
+              <v-checkbox
+                v-model="weiterEmpfehlen"
+                label="Ich empfehle das Unternehmen weiter"
+              ></v-checkbox>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="12">
+              <v-btn class="me-4" type="submit" :disabled="!form">
+                Bewertung hinzufügen
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-form>
+      </v-col>
+    </v-container>
+    <div v-else>
+      <h3>Sie haben bereits ein Unternehmen bewertet.</h3>
+    </div>
+  </div>
 </template>
 
 <script>
 import axios from "axios";
+import { mapState } from "vuex";
 
 export default {
   data() {
@@ -190,16 +157,49 @@ export default {
       formData: {},
       companies: [],
       form: false,
+
+      user:null
+      
     };
+  },
+  computed: {
+    ...mapState({
+      userState: state => state.user
+    })
   },
   methods: {
     required(v) {
       return !!v || "Dieses Feld ist erforderlich";
     },
+    getUser(){
+      const user={
+        username:this.userState,
+      }
+      axios
+      .post("http://localhost:8080/getUser", user )
+      .then((response) => {
+        this.user = response.data[0];
+        console.log(this.user);
+      })
+      .catch((error) => console.error("Error:", error));
+
+    },
+    updateUser(){
+      console.log("Update User");
+      this.user.anzahlBewertungen++;
+      axios
+      .post("http://localhost:8080/updateUser", this.user )
+      .then((response) => {
+        this.user = response.data[0];
+      })
+      .catch((error) => console.error("Error:", error));
+
+    },
+
     createNewCompany() {
       const formData = {
         _id: this.unternehmen.toLowerCase(),
-        name: this.unternehmen.toLowerCase(),
+        name: this.unternehmen,
         ratings: [
           {
             aufgaben: this.aufgaben,
@@ -214,17 +214,17 @@ export default {
         ],
       };
       this.formData = formData;
-      console.log(formData);
       this.submitCompany();
+      this.updateUser();
     },
     async submitCompany() {
-      axios
-        .post("http://localhost:8080/addNewCompany", this.formData)
-        .then((response) => {
-          console.log(response);
-        })
-        .catch((error) => console.error("Error:", error));
-      this.$router.push("/mainpage");
+      try {
+        const response = await axios.post("http://localhost:8080/addNewCompany", this.formData);
+        console.log(response);
+        this.$router.push("/mainpage");
+      } catch (error) {
+        console.error("Error:", error);
+      }
     },
   },
   mounted() {
@@ -234,6 +234,8 @@ export default {
         this.companies = response.data.map((companie) => companie.name);
       })
       .catch((error) => console.error("Error:", error));
+
+    this.getUser();
   },
 };
 </script>
@@ -252,12 +254,3 @@ export default {
   flex: none;
 }
 </style>
-
-
-<!-- .name {
-  flex: 1;
-  min-width: 100px;
-}
-.rating {
-  flex: none;
-} -->

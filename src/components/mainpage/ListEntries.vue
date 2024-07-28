@@ -152,7 +152,6 @@ export default {
     },
 
     filterCompanies() {
-      console.log("Filter", this.searchValue);
       this.filteredCompanies = this.companies.filter((document) =>
         document.name.toLowerCase().includes(this.searchValue.toLowerCase())
       );
