@@ -4,39 +4,43 @@
     style="height:90%;"
   >
 
-    <v-col
-      cols="12"
-      sm="12"
-      md="8"
+  <v-col cols="12" sm="12" md="8">
+    <v-progress-circular
+      v-if="isLoading"
+      indeterminate
+      color="primary"
+      size="64"
+    ></v-progress-circular>
+    <v-virtual-scroll
+      v-else
+      :items="getPaginatedCompaniesList()"
+      height="800"
     >
-      <v-virtual-scroll
-        :items="filteredCompanies"
-        height="800"
-      >
-        <template v-slot:default="{ item }">
-          <v-card
-            class="my-card"
-            variant="outlined"
-            @click="showDialog = true; selectedCompany = item"
-          >
-            <template v-slot:title>
-              {{ item.name }}
-            </template>
-            <template v-slot:append>
-              <v-rating
-                active-color="orange-lighten-1"
-                id="rating"
-                half-increments
-                :model-value="avgRating(item,'gesamt')"
-                readonly
-              ></v-rating>
-            </template>
-          </v-card>
+      <template v-slot:default="{ item }">
+        <v-card
+          class="my-card"
+          variant="outlined"
+          @click="showDialog = true; selectedCompany = item"
+        >
+          <template v-slot:title>
+            {{ item.name }}
+          </template>
+          <template v-slot:append>
+            <v-rating
+              active-color="orange-lighten-1"
+              id="rating"
+              half-increments
+              :model-value="avgRating(item, 'gesamt')"
+              readonly
+            ></v-rating>
+          </template>
+        </v-card>
+      </template>
+    </v-virtual-scroll>
+    <v-pagination v-model="page" :length="Math.ceil(this.filteredCompanies.length/10)"></v-pagination>
+  </v-col>
 
-        </template>
 
-      </v-virtual-scroll>
-    </v-col>
     <!-- Dialog -->
     <v-dialog
       v-model="showDialog"
@@ -92,7 +96,6 @@
                     <v-rating
                       active-color="orange-lighten-1"
                       :model-value="item.gesamt"
-                      class="rating"
                       readonly
                     ></v-rating>
                     {{ item.gesamt }}/5
@@ -134,14 +137,12 @@ import axios from "axios";
 
 export default {
   components: {},
-  computed: {
-    ratingsWithComments() {
-      return this.selectedCompany.ratings.filter(
-        (rating) => rating.kommentar !== null
-      );
-    },
-  },
   methods: {
+
+    getPaginatedCompaniesList(){
+      return  this.filteredCompanies.slice(0+(this.page-1)*10,10+(this.page-1)*10); // Teilt die Liste immer In 10ner Blocks ein. page-1 so das am Anfang index 0 ist und nicht 10. 
+    },
+
     avgRating(company, attribute) {
       if (company.ratings.length === 0) return 0;
       let sumratings = 0;
@@ -156,9 +157,6 @@ export default {
         document.name.toLowerCase().includes(this.searchValue.toLowerCase())
       );
     },
-    items2() {
-      return this.companies;
-    },
   },
   props: {
     searchValue: "",
@@ -172,11 +170,10 @@ export default {
         { name: 'Gesamt'},
       ],
       showDialog: false,
-      selectedCompany: null, // To hold the clicked company's data
-      companies: [],
-      ratingValue: 0,
-      cardInfo: "",
+      selectedCompany: [], // To hold the clicked company's data
       filteredCompanies: [],
+      isLoading: true,
+      page:1,
     };
   },
 
@@ -190,7 +187,9 @@ export default {
     axios
       .get("http://localhost:8080/getAllCompanies")
       .then((response) => {
+
         this.companies = response.data;
+        this.isLoading=false;
         this.filterCompanies();
       })
       .catch((error) => console.error("Error:", error));

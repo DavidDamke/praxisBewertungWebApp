@@ -114,7 +114,7 @@
       </v-col>
     </v-container>
     <div v-else>
-      <h3>Sie haben bereits ein Unternehmen bewertet.</h3>
+      <h3>Du hast bereits ein Unternehmen bewertet.</h3>
     </div>
   </div>
 </template>
@@ -158,7 +158,7 @@ export default {
       companies: [],
       form: false,
 
-      user:null
+      user: null
       
     };
   },

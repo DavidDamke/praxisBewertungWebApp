@@ -9,11 +9,12 @@
         <v-icon>{{ item.icon }}</v-icon>
         {{ item.text }}
       </v-tab>
-    </v-tabs>
-    <button
+      <button
       v-if="isLogedIn"
       @click="logout"
     >Logout</button>
+    </v-tabs>
+   
   </v-card>
 </template>
 <script>
@@ -47,7 +48,7 @@ export default {
     logout() {
       this.logoutAction()
         .then(() => {
-          this.$router.push("/login"); // Redirect to login page or another page
+          this.$router.push("/login");
         })
         .catch((error) => {
           console.error("Logout error:", error);
