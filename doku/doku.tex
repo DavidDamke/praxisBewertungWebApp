@@ -1,0 +1,96 @@
+\documentclass[a4paper,12pt]{article}
+
+% Pakete laden
+\usepackage[utf8]{inputenc} % Zeichencodierung
+\usepackage[T1]{fontenc}    % Ausgabe von Umlauten
+\usepackage[ngerman]{babel} % Deutsche Silbentrennung und Sprache
+\usepackage{amsmath}        % Mathematische Symbole
+\usepackage{graphicx}       % Einfügen von Bildern
+\usepackage{hyperref}       % Für Hyperlinks
+
+% Dokumentbeginn
+\begin{document}
+
+% Titel, Autor, Datum
+\title{Projektarbeit: Praxissetellenbewerten}
+\author{David Damke}
+\date{\today}
+
+\maketitle
+
+% Inhaltsverzeichnis (optional)
+\tableofcontents
+\newpage
+
+% Abschnitt 1
+\section{Einführung}
+In dieser Pdf wird gezeigt wie ein Vue App mit Node Backend auf einem Debian Server eingerichtet werden müssen. 
+Dazu noch welche Schritte für das Rechenzentrum Notwendig sind und welche Versionen und Plugins verwendet wurden. 
+
+
+% Abschnitt 2
+\section{Plugins und Versionen}
+
+\subsection{NodeJs}
+NodeJs : v20.11.0
+"cors": "2.8.5",
+"express": "4.18.2",
+"ldapjs": "3.0.7",
+"mongodb": "6.3.0"
+
+
+\subsection{Vue}
+axios 1.6.7,
+vue": "3.3.11",
+vue-router": "4.2.5",
+vuetify": "3.0.1",
+vuex": "4.1.0"
+
+"@mdi/font": "7.4.47",
+    "@vitejs/plugin-vue": "4.5.2",
+    "vite": "5.0.10"
+
+\section{Rechenzentrum}
+
+Rechenzentrum muss die eignenen Firewall Regeln so anpassen das die ServerIp auf den Ldap Server zugreiffen kann.
+
+
+
+
+% Abschnitt 3
+\section{Einrichtung auf Debian Webserver}
+
+\subsubsection{Verbindung zum Server}
+
+ssh name@ip
+password : 
+
+\subsection{Apache2}
+
+\subsubsection{Webapp}
+
+npm run build 
+
+dist ordner mittels scp an Server schicken 
+
+unter /var/www/ Speichern 
+
+Unter /etc/apach2/ .... neue Conf anlegen
+
+Hier beschreiben was in Conf rein muss. 
+
+
+
+
+
+\subsubsection{Node Backend}
+
+Auf Server 
+
+Als Service von Ubuntu Starten 
+
+unter /etc/apache2  ein Reverse Proxy erstellen 
+
+
+
+\end{document}
