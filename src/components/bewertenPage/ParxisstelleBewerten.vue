@@ -11,7 +11,6 @@
           fast-fail
           v-model="form"
           ref="form"
-          @submit.prevent="createNewCompany"
         >
           <v-row>
             <v-col cols="12">
@@ -142,16 +141,15 @@ export default {
       betreuung: 0,
       aufgaben: 0,
       gesamt: 0,
-      buttonPressed: true,
       kommentar: null,
       unternehmen: "",
       abteilung: "",
       semester: null,
       weiterEmpfehlen: false,
+     
       formData: {},
       companies: [],
       form: false,
-
       user: null
       
     };
@@ -165,8 +163,8 @@ export default {
     },
   },
   methods: {
-    required(v) {
-      return !!v || "Dieses Feld ist erforderlich";
+    required(value) {
+      return !!value || "Dieses Feld ist erforderlich";
     },
     getUser(){
       const user={
@@ -176,23 +174,11 @@ export default {
       .post("http://localhost:8080/getUser", user )
       .then((response) => {
         this.user = response.data[0];
-        console.log(this.user);
       })
       .catch((error) => console.error("Error:", error));
 
     },
-    updateUser(){
-      console.log("Update User");
-      this.user.anzahlBewertungen++;
-      axios
-      .post("http://localhost:8080/updateUser", this.user )
-      .then((response) => {
-        this.user = response.data[0];
-      })
-      .catch((error) => console.error("Error:", error));
-
-    },
-
+    
     createNewCompany() {
       const formData = {
         _id: this.unternehmen.toLowerCase(),
@@ -216,12 +202,22 @@ export default {
     },
     async submitCompany() {
       try {
-        const response = await axios.post("http://localhost:8080/addNewCompany", this.formData);
+        const response = await axios.post("http://localhost:8080/addNewCompany", this.formData); //Add or Update Company
         console.log(response);
         this.$router.push("/mainpage");
       } catch (error) {
         console.error("Error:", error);
       }
+    },
+    updateUser(){
+      this.user.anzahlBewertungen++;
+      axios
+      .post("http://localhost:8080/updateUser", this.user )
+      .then((response) => {
+        this.user = response.data[0];
+      })
+      .catch((error) => console.error("Error:", error));
+  
     },
   },
   mounted() {
