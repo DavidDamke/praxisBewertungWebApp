@@ -1,7 +1,6 @@
 <template>
   <v-container
     class="d-flex align-center justify-center"
-    style="height:90%;"
   >
 
   <v-col cols="12" sm="12" md="8">
@@ -14,7 +13,7 @@
     <v-virtual-scroll
       v-else
       :items="getPaginatedCompaniesList()"
-      height="800"
+      height="660"
     >
       <template v-slot:default="{ item }">
         <v-card
@@ -47,8 +46,8 @@
       max-width="50%"
     >
       <v-card>
-        <v-card-title>
-          {{ selectedCompany ? selectedCompany.name : '' }}
+        <v-card-title class="dialogTitel">
+          <p>{{ selectedCompany ? selectedCompany.name : '' }}</p>
           <v-rating
             id="rating"
             :model-value="avgRating(selectedCompany,'gesamt')"
@@ -91,8 +90,7 @@
                 class="my-card"
                 variant="outlined"
               >
-                <v-card-item>
-                  <v-card-titel>
+                  <v-card-titel class="dialogTitel">
                     <v-rating
                       active-color="orange-lighten-1"
                       :model-value="item.gesamt"
@@ -104,7 +102,7 @@
                     Semester: {{ item.semester }}
                     Weiterempfehlung: {{item.weiterEmpfehlen ? "Ja" : "Nein"}}
                   </v-card-subtitle>
-                </v-card-item>
+                
                 <div v-if="item.kommentar!=null">
                 <v-divider ></v-divider>
                 <v-card-text>
@@ -202,23 +200,27 @@ export default {
   height: 30px;
 }
 .ratingContent {
-  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.dialogTitel {
+  margin-bottom: 0px;
   display: flex;
   align-items: center;
 }
 .name {
   min-width: 100px;
 }
-.rating {
-  margin-left: 16px;
+.praxisstelleBewerten{
+  margin-bottom: 50px;
 }
-
 v-card-item {
   display: inline;
 }
 
 .my-card {
   margin-bottom: 5px; /* Margin around each card */
-  padding: 20px; /* Padding inside each card */
+  padding: 15px; /* Padding inside each card */
 }
 </style>

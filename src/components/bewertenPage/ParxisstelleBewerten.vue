@@ -21,7 +21,6 @@
                 label="Unternehmen"
                 solo
                 :clearable="true"
-                :search-input.sync="searchInput"
                 :rules="[required]"
               >
               </v-combobox>
@@ -40,7 +39,6 @@
                 label="Semester"
                 solo
                 :clearable="true"
-                :search-input.sync="searchInput"
                 :rules="[required]"
               >
               </v-combobox>
@@ -53,7 +51,6 @@
                 active-color="orange-lighten-1"
                 v-model="aufgaben"
                 class="rating"
-                clearable
               ></v-rating>
             </v-col>
             <v-col cols="12" sm="6" md="6" class="ratingContainer">
@@ -62,7 +59,6 @@
                 active-color="orange-lighten-1"
                 v-model="betreuung"
                 class="rating"
-                clearable
               ></v-rating>
             </v-col>
             <v-col cols="12" sm="6" md="6" class="ratingContainer">
@@ -71,7 +67,6 @@
                 active-color="orange-lighten-1"
                 v-model="gehalt"
                 class="rating"
-                clearable
               ></v-rating>
             </v-col>
             <v-col cols="12" sm="6" md="6" class="ratingContainer">
@@ -80,7 +75,6 @@
                 active-color="orange-lighten-1"
                 v-model="gesamt"
                 class="rating"
-                clearable
               ></v-rating>
             </v-col>
           </div>
@@ -105,7 +99,7 @@
           </v-row>
           <v-row>
             <v-col cols="12">
-              <v-btn class="me-4" type="submit" :disabled="!form">
+              <v-btn class="me-4" type="submit" :disabled="!form || !allRatingsFilled">
                 Bewertung hinzufügen
               </v-btn>
             </v-col>
@@ -165,7 +159,10 @@ export default {
   computed: {
     ...mapState({
       userState: state => state.user
-    })
+    }),
+    allRatingsFilled() {
+      return this.aufgaben !== 0 && this.betreuung !== 0 && this.gehalt !== 0 && this.gesamt !== 0;
+    },
   },
   methods: {
     required(v) {
