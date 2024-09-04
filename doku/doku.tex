@@ -7,7 +7,33 @@
 \usepackage{amsmath}        % Mathematische Symbole
 \usepackage{graphicx}       % Einfügen von Bildern
 \usepackage{hyperref}       % Für Hyperlinks
+\usepackage{listings}
+\usepackage{color}
+\usepackage{geometry}
+\geometry{a4paper,left=25mm,right=25mm, top=25mm, bottom=30mm}
 
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{green}{rgb}{0,0.6,0}
+\definecolor{blue}{rgb}{0,0,1}
+
+\lstset{
+    language=bash,
+    basicstyle=\ttfamily,
+    keywordstyle=\color{blue}\bfseries,
+    commentstyle=\color{green},
+    stringstyle=\color{red},
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    stepnumber=1,
+    numbersep=5pt,
+    backgroundcolor=\color{white},
+    showspaces=false,
+    showstringspaces=false,
+    frame=single,
+    breaklines=true,
+    breakatwhitespace=false,
+    escapeinside={(*@}{@*)},
+}
 % Dokumentbeginn
 \begin{document}
 
@@ -25,31 +51,39 @@
 % Abschnitt 1
 \section{Einführung}
 In dieser Pdf wird gezeigt wie ein Vue App mit Node Backend auf einem Debian Server eingerichtet werden müssen. 
-Dazu noch welche Schritte für das Rechenzentrum Notwendig sind und welche Versionen und Plugins verwendet wurden. 
+Dazu noch welche Schritte für das Rechenzentrum Notwendig sind und welche Versionen und Plugins verwendet wurden.
+Zum erstellen der Tutorials wurde ChatGPT verwendet. 
 
 
 % Abschnitt 2
 \section{Plugins und Versionen}
 
-\subsection{NodeJs}
-NodeJs : v20.11.0
-"cors": "2.8.5",
-"express": "4.18.2",
-"ldapjs": "3.0.7",
-"mongodb": "6.3.0"
+\subsection{Node.js}
+\begin{itemize}
+    \item \textbf{Node.js}: v20.11.0
+    \item \textbf{Abhängigkeiten}:
+    \begin{itemize}
+        \item \texttt{cors}: 2.8.5
+        \item \texttt{express}: 4.18.2
+        \item \texttt{ldapjs}: 3.0.7
+        \item \texttt{mongodb}: 6.3.0
+    \end{itemize}
+\end{itemize}
 
-
-\subsection{Vue}
-axios 1.6.7,
-vue": "3.3.11",
-vue-router": "4.2.5",
-vuetify": "3.0.1",
-vuex": "4.1.0"
-
-"@mdi/font": "7.4.47",
-    "@vitejs/plugin-vue": "4.5.2",
-    "vite": "5.0.10"
-
+\subsection{Vue.js}
+\begin{itemize}
+    \item \textbf{Vue.js}: 3.3.11
+    \item \textbf{Abhängigkeiten}:
+    \begin{itemize}
+        \item \texttt{axios}: 1.6.7
+        \item \texttt{vue-router}: 4.2.5
+        \item \texttt{vuetify}: 3.0.1
+        \item \texttt{vuex}: 4.1.0
+        \item \texttt{@mdi/font}: 7.4.47
+        \item \texttt{@vitejs/plugin-vue}: 4.5.2
+        \item \texttt{vite}: 5.0.10
+    \end{itemize}
+\end{itemize}
 \section{Rechenzentrum}
 
 Rechenzentrum muss die eignenen Firewall Regeln so anpassen das die ServerIp auf den Ldap Server zugreiffen kann.
@@ -66,8 +100,94 @@ ssh name@ip
 password : 
 
 \subsection{Apache2}
+\subsubsection{Voraussetzungen}
+Bevor du mit der Einrichtung beginnst, benötigst du:
+\begin{itemize}
+    \item Einen Debian-Server (Debian 10 oder 11 empfohlen)
+    \item Root-Zugriff oder einen Benutzer mit sudo-Rechten
+    \item Einen SSH-Client, um dich mit dem Server zu verbinden (z.B. PuTTY oder direkt über Terminal)
+\end{itemize}
 
-\subsubsection{Webapp}
+\subsubsection{Schritt 1: Aktualisierung des Paketsystems}
+Bevor du neue Software installierst, solltest du das Debian-Paketsystem aktualisieren, um sicherzustellen, dass du die neuesten Versionen der Pakete erhältst.
+
+\begin{lstlisting}
+sudo apt update
+sudo apt upgrade
+\end{lstlisting}
+
+\subsubsection{Schritt 2: Installation von Apache2}
+Apache2 ist in den Standard-Repositorys von Debian enthalten, daher kann die Installation mit dem folgenden Befehl durchgeführt werden:
+
+\begin{lstlisting}
+sudo apt install apache2
+\end{lstlisting}
+
+Dieser Befehl installiert Apache2 sowie alle notwendigen Abhängigkeiten. Nach der Installation sollte der Apache-Webserver automatisch starten.
+
+\subsubsection{Schritt 3: Überprüfung des Apache-Dienstes}
+Nach der Installation kannst du überprüfen, ob der Apache-Dienst läuft, indem du den folgenden Befehl ausführst:
+
+\begin{lstlisting}
+sudo systemctl status apache2
+\end{lstlisting}
+
+Du solltest eine Ausgabe erhalten, die bestätigt, dass der Dienst läuft. Zum Beispiel:
+
+\begin{lstlisting}
+apache2.service - The Apache HTTP Server
+     Loaded: loaded (/lib/systemd/system/apache2.service; enabled; vendor preset: enabled)
+     Active: active (running) since Mon 2021-08-16 10:10:02 UTC; 1min 45s ago
+\end{lstlisting}
+
+\subsubsection{Schritt 4: Zugriff auf den Webserver}
+Um sicherzustellen, dass der Webserver ordnungsgemäß funktioniert, öffne einen Webbrowser und gebe die IP-Adresse deines Servers ein. Wenn Apache korrekt installiert wurde, solltest du die Standard-Apache-Seite sehen, die besagt:
+
+\begin{quote}
+    \textit{It works!}
+\end{quote}
+
+\subsubsection{Schritt 5: Firewall-Konfiguration}
+Wenn auf deinem Server eine Firewall läuft, musst du sicherstellen, dass der Webserver-Verkehr (Port 80 für HTTP und 443 für HTTPS) zugelassen wird.
+
+\begin{lstlisting}
+sudo ufw allow 'Apache Full'
+\end{lstlisting}
+
+Dieser Befehl öffnet die Ports 80 (HTTP) und 443 (HTTPS).
+
+\subsubsection{Schritt 6: Apache2-Konfiguration}
+Die Standardkonfiguration von Apache befindet sich in der Datei \texttt{/etc/apache2/apache2.conf}. Normalerweise musst du diese Datei nicht ändern, es sei denn, du möchtest spezielle Einstellungen vornehmen.
+
+Um eine benutzerdefinierte Website hinzuzufügen, kannst du eine neue Konfigurationsdatei in \texttt{/etc/apache2/sites-available/} erstellen. Ein Beispiel für eine einfache Konfigurationsdatei:
+
+\begin{lstlisting}
+<VirtualHost *:80>
+    ServerAdmin webmaster@domain.com
+    DocumentRoot /var/www/html
+    ServerName www.example.com
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+\end{lstlisting}
+
+\subsubsection{Schritt 7: Neustart des Apache-Webservers}
+Wenn du Änderungen an der Konfiguration vorgenommen hast, musst du den Apache-Dienst neu starten, damit die Änderungen wirksam werden.
+
+\begin{lstlisting}
+sudo systemctl restart apache2
+\end{lstlisting}
+
+\subsubsection{Schritt 8: Überprüfung der Konfiguration}
+Du kannst die Apache-Konfiguration auf Fehler überprüfen, bevor du den Server neu startest, indem du den folgenden Befehl ausführst:
+
+\begin{lstlisting}
+sudo apachectl configtest
+\end{lstlisting}
+
+Wenn alles in Ordnung ist, solltest du die Meldung \texttt{Syntax OK} erhalten.
+
+\subsection{Webapp}
 
 npm run build 
 
@@ -80,10 +200,146 @@ Unter /etc/apach2/ .... neue Conf anlegen
 Hier beschreiben was in Conf rein muss. 
 
 
+\subsubsection{Voraussetzungen}
+\begin{itemize}
+    \item Lokale Vue.js-Anwendung, die mit \texttt{npm} verwaltet wird.
+    \item Ein Debian-Server mit Apache2.
+    \item SSH-Zugang zu deinem Server.
+    \item \texttt{scp} zum Übertragen der Dateien.
+\end{itemize}
+
+\subsubsection{Schritt 1: Lokale Vue.js-Anwendung bauen}
+\begin{enumerate}
+    \item Öffne das Terminal und navigiere in das Verzeichnis deiner Vue.js-Anwendung:
+    
+    \begin{lstlisting}
+    cd /pfad/zu/deiner/vue-app
+    \end{lstlisting}
+    
+    \item Installiere die Abhängigkeiten:
+
+    \begin{lstlisting}
+    npm install
+    \end{lstlisting}
+    
+    \item Baue die Anwendung für die Produktion:
+
+    \begin{lstlisting}
+    npm run build
+    \end{lstlisting}
+    
+    Dieser Befehl erstellt ein optimiertes \texttt{dist/}-Verzeichnis, das alle für die Bereitstellung notwendigen Dateien enthält.
+\end{enumerate}
+
+\subsubsection{Schritt 2: Übertragung der Vue.js-App auf den Debian-Server}
+\begin{enumerate}
+    \item Verwende \texttt{scp}, um das \texttt{dist/}-Verzeichnis auf den Server zu kopieren. Ersetze \texttt{username} durch deinen Benutzernamen und \texttt{192.168.1.100} durch die IP-Adresse deines Servers:
+    
+    \begin{lstlisting}
+    scp -r ./dist username@192.168.1.100:/tmp/vuewebapp
+    \end{lstlisting}
+    
+    Dies überträgt den Inhalt des \texttt{dist}-Ordners auf den Server in das temporäre Verzeichnis \texttt{/tmp/vuewebapp}.
+\end{enumerate}
+
+\subsubsection{Schritt 3: Vue.js-Dateien in das Apache-Verzeichnis verschieben}
+\begin{enumerate}
+    \item Melde dich per SSH auf dem Server an:
+
+    \begin{lstlisting}
+    ssh username@192.168.1.100
+    \end{lstlisting}
+    
+    \item Erstelle das Zielverzeichnis für die Webanwendung:
+    
+    \begin{lstlisting}
+    sudo mkdir -p /var/www/vuewebapp
+    \end{lstlisting}
+    
+    \item Verschiebe die Dateien von \texttt{/tmp/vuewebapp} nach \texttt{/var/www/vuewebapp}:
+    
+    \begin{lstlisting}
+    sudo mv /tmp/vuewebapp/* /var/www/vuewebapp/
+    \end{lstlisting}
+    
+    \item Ändere die Berechtigungen, sodass der Apache-Benutzer Zugriff auf die Dateien hat:
+    
+    \begin{lstlisting}
+    sudo chown -R www-data:www-data /var/www/vuewebapp
+    sudo chmod -R 755 /var/www/vuewebapp
+    \end{lstlisting}
+\end{enumerate}
+
+\subsubsection{Schritt 4: Apache2-Konfiguration}
+\begin{enumerate}
+    \item Erstelle eine neue Konfigurationsdatei für die Vue.js-Webanwendung in \texttt{/etc/apache2/sites-available/}:
+
+    \begin{lstlisting}
+    sudo nano /etc/apache2/sites-available/vuewebapp.conf
+    \end{lstlisting}
+    
+    \item Füge die folgende Konfiguration ein:
+    
+    \begin{lstlisting}
+<VirtualHost *:80>
+    ServerAdmin admin@example.com
+    ServerName example.com
+    ServerAlias www.example.com
+
+    DocumentRoot /var/www/vuewebapp
+
+    <Directory /var/www/vuewebapp>
+        Options Indexes FollowSymLinks
+        AllowOverride All
+        Require all granted
+    </Directory>
+
+    ErrorLog ${APACHE_LOG_DIR}/vuewebapp_error.log
+    CustomLog ${APACHE_LOG_DIR}/vuewebapp_access.log combined
+</VirtualHost>
+    \end{lstlisting}
+    
+    Ersetze \texttt{example.com} mit deiner tatsächlichen Domain.
+
+    \item Aktiviere die neue Apache2-Site:
+    
+    \begin{lstlisting}
+    sudo a2ensite vuewebapp.conf
+    \end{lstlisting}
+    
+    \item (Optional) Deaktiviere die Standardseite, falls sie noch aktiviert ist:
+    
+    \begin{lstlisting}
+    sudo a2dissite 000-default.conf
+    \end{lstlisting}
+    
+    \item Überprüfe die Apache-Konfiguration:
+    
+    \begin{lstlisting}
+    sudo apachectl configtest
+    \end{lstlisting}
+    
+    Wenn alles korrekt ist, sollte die Ausgabe \texttt{Syntax OK} lauten.
+
+    \item Starte den Apache-Dienst neu, um die Änderungen zu übernehmen:
+    
+    \begin{lstlisting}
+    sudo systemctl restart apache2
+    \end{lstlisting}
+\end{enumerate}
+
+\subsubsection{Schritt 5: Überprüfung der Bereitstellung}
+Rufe deine Domain oder die IP-Adresse des Servers in einem Webbrowser auf:
+
+\begin{lstlisting}
+http://example.com
+\end{lstlisting}
+
+Du solltest die Startseite deiner Vue.js-Anwendung sehen.
 
 
 
-\subsubsection{Node Backend}
+\subsection{Node Backend}
 
 Auf Server 
 
@@ -91,6 +347,324 @@ Als Service von Ubuntu Starten
 
 unter /etc/apache2  ein Reverse Proxy erstellen 
 
+\subsubsection{Voraussetzungen}
+\begin{itemize}
+    \item Eine Node.js-Anwendung, die lokal läuft.
+    \item Ein Debian-Server mit Apache2 und \texttt{scp}-Zugang.
+    \item Grundlegende Kenntnisse in der Verwaltung von Systemdiensten und der Apache-Konfiguration.
+\end{itemize}
 
+\subsubsection{Schritt 1: Node.js-Anwendung lokal bauen}
+\begin{enumerate}
+    \item Öffne das Terminal und navigiere in das Verzeichnis deiner Node.js-Anwendung:
+    
+    \begin{lstlisting}
+    cd /pfad/zu/deiner/node-app
+    \end{lstlisting}
+    
+    \item Stelle sicher, dass alle Abhängigkeiten installiert sind:
 
+    \begin{lstlisting}
+    npm install
+    \end{lstlisting}
+    
+    \item Überprüfe, ob die Anwendung lokal ordnungsgemäß läuft:
+
+    \begin{lstlisting}
+    npm start
+    \end{lstlisting}
+\end{enumerate}
+
+\subsubsection{Schritt 2: Übertragung der Node.js-App auf den Debian-Server}
+\begin{enumerate}
+    \item Verwende \texttt{scp}, um die Node.js-Anwendung auf den Debian-Server zu kopieren. Ersetze \texttt{username} durch deinen Benutzernamen und \texttt{192.168.1.100} durch die IP-Adresse deines Servers:
+    
+    \begin{lstlisting}
+    scp -r ./node-app username@192.168.1.100:/tmp/backend
+    \end{lstlisting}
+    
+    Dies überträgt den Inhalt des Anwendungsverzeichnisses auf den Server nach \texttt{/tmp/backend}.
+    
+    \item Melde dich per SSH auf dem Server an:
+    
+    \begin{lstlisting}
+    ssh username@192.168.1.100
+    \end{lstlisting}
+    
+    \item Erstelle das Zielverzeichnis für die Anwendung und verschiebe die Dateien:
+    
+    \begin{lstlisting}
+    sudo mkdir -p /var/www/backend
+    sudo mv /tmp/backend/* /var/www/backend/
+    \end{lstlisting}
+    
+    \item Ändere die Berechtigungen des Verzeichnisses:
+    
+    \begin{lstlisting}
+    sudo chown -R www-data:www-data /var/www/backend
+    sudo chmod -R 755 /var/www/backend
+    \end{lstlisting}
+\end{enumerate}
+
+\subsubsection{Schritt 3: Einrichtung der Node.js-Anwendung als Systemdienst}
+\begin{enumerate}
+    \item Erstelle eine neue \texttt{service}-Datei für die Node.js-Anwendung:
+
+    \begin{lstlisting}
+    sudo nano /etc/systemd/system/node-backend.service
+    \end{lstlisting}
+    
+    \item Füge den folgenden Inhalt ein:
+    
+    \begin{lstlisting}
+[Unit]
+Description=Node.js Backend Application
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/node /var/www/backend/app.js
+WorkingDirectory=/var/www/backend
+Restart=always
+User=www-data
+Environment=PORT=8080
+
+[Install]
+WantedBy=multi-user.target
+    \end{lstlisting}
+    
+    Hierbei solltest du den Pfad zu deiner Hauptdatei (\texttt{app.js}) anpassen.
+
+    \item Lade den Systemdienst neu, um die neue Konfiguration zu laden:
+
+    \begin{lstlisting}
+    sudo systemctl daemon-reload
+    \end{lstlisting}
+    
+    \item Starte die Node.js-Anwendung als Dienst:
+
+    \begin{lstlisting}
+    sudo systemctl start node-backend
+    \end{lstlisting}
+    
+    \item Stelle sicher, dass die Anwendung beim Systemstart automatisch gestartet wird:
+
+    \begin{lstlisting}
+    sudo systemctl enable node-backend
+    \end{lstlisting}
+    
+    \item Überprüfe den Status des Dienstes:
+
+    \begin{lstlisting}
+    sudo systemctl status node-backend
+    \end{lstlisting}
+    
+    Du solltest eine Ausgabe erhalten, die bestätigt, dass der Dienst aktiv läuft.
+\end{enumerate}
+
+\subsubsection{Schritt 4: Konfiguration von Apache als Reverse Proxy}
+\begin{enumerate}
+    \item Stelle sicher, dass die Apache-Module für den Reverse-Proxy aktiviert sind:
+
+    \begin{lstlisting}
+    sudo a2enmod proxy
+    sudo a2enmod proxy_http
+    \end{lstlisting}
+    
+    \item Erstelle oder bearbeite die Apache-Konfigurationsdatei für die Webseite:
+
+    \begin{lstlisting}
+    sudo nano /etc/apache2/sites-available/vuewebapp.conf
+    \end{lstlisting}
+    
+    \item Füge den folgenden Reverse-Proxy-Abschnitt in die VirtualHost-Konfiguration ein:
+    
+    \begin{lstlisting}
+<VirtualHost *:80>
+    ServerAdmin admin@example.com
+    ServerName example.com
+    ServerAlias www.example.com
+
+    DocumentRoot /var/www/vuewebapp
+
+    <Directory /var/www/vuewebapp>
+        Options Indexes FollowSymLinks
+        AllowOverride All
+        Require all granted
+    </Directory>
+
+    ProxyPass /api http://localhost:8080/api
+    ProxyPassReverse /api http://localhost:8080/api
+
+    ErrorLog ${APACHE_LOG_DIR}/vuewebapp_error.log
+    CustomLog ${APACHE_LOG_DIR}/vuewebapp_access.log combined
+</VirtualHost>
+    \end{lstlisting}
+    
+    Dieser Abschnitt leitet alle Anfragen, die mit \texttt{/api} beginnen, an die Node.js-Anwendung auf Port 8080 weiter.
+
+    \item Überprüfe die Apache-Konfiguration:
+
+    \begin{lstlisting}
+    sudo apachectl configtest
+    \end{lstlisting}
+    
+    Wenn alles korrekt ist, sollte die Ausgabe \texttt{Syntax OK} lauten.
+
+    \item Starte Apache neu, damit die Änderungen wirksam werden:
+
+    \begin{lstlisting}
+    sudo systemctl restart apache2
+    \end{lstlisting}
+\end{enumerate}
+
+\subsubsection{Schritt 5: Überprüfung der Konfiguration}
+\begin{itemize}
+    \item Rufe deine Webseite auf, z. B. \texttt{http://example.com}.
+    \item Die statischen Vue.js-Inhalte sollten korrekt angezeigt werden.
+    \item Alle Anfragen an \texttt{/api} sollten automatisch an die Node.js-Anwendung auf \texttt{localhost:8080} weitergeleitet werden.
+\end{itemize}
+
+\subsection{MongoDb}
+
+\subsubsection{Repository hinzufügen}
+MongoDB ist in den offiziellen Debian-Repositories nicht in der neuesten Version verfügbar, daher fügen wir das offizielle MongoDB-Repository hinzu.
+
+\begin{enumerate}
+    \item Importiere den öffentlichen GPG-Schlüssel für das MongoDB-Repository:
+
+    \begin{lstlisting}
+    wget -qO - https://www.mongodb.org/static/pgp/server-6.0.asc | sudo apt-key add -
+    \end{lstlisting}
+
+    \item Füge das MongoDB-Repository zur Paketquelle hinzu:
+
+    \begin{lstlisting}
+    echo "deb [ arch=amd64 ] https://repo.mongodb.org/apt/debian buster/mongodb-org/6.0 main" | sudo tee /etc/apt/sources.list.d/mongodb-org-6.0.list
+    \end{lstlisting}
+    
+    \item Aktualisiere das Paket-Repository:
+
+    \begin{lstlisting}
+    sudo apt update
+    \end{lstlisting}
+    
+\end{enumerate}
+
+\subsubsection{MongoDB installieren und als Service konfigurieren}
+\begin{enumerate}
+    \item Installiere MongoDB:
+
+    \begin{lstlisting}
+    sudo apt install -y mongodb-org
+    \end{lstlisting}
+    
+    \item Starte den MongoDB-Dienst und aktiviere ihn, damit er beim Systemstart automatisch startet:
+
+    \begin{lstlisting}
+    sudo systemctl start mongod
+    sudo systemctl enable mongod
+    \end{lstlisting}
+    
+    \item Überprüfe, ob der Dienst läuft:
+
+    \begin{lstlisting}
+    sudo systemctl status mongod
+    \end{lstlisting}
+    
+    Wenn alles richtig funktioniert, sollte der Status als \texttt{active (running)} angezeigt werden.
+\end{enumerate}
+
+\subsubsection{Schritt 2: MongoDB Datenbank und Collections erstellen}
+
+\subsubsection{Verbindung zur MongoDB herstellen}
+Verwende das MongoDB-Shell-Tool \texttt{mongosh}, um eine Verbindung zu MongoDB herzustellen:
+
+\begin{lstlisting}
+mongosh
+\end{lstlisting}
+
+\subsubsection{Erstellen der Datenbank und Collections}
+\begin{enumerate}
+    \item Erstelle eine neue Datenbank (z.B. \texttt{myappdb}):
+
+    \begin{lstlisting}
+    use myappdb
+    \end{lstlisting}
+    
+    \item Erstelle zwei Collections \texttt{user} und \texttt{companies}:
+
+    \begin{lstlisting}
+    db.createCollection("user")
+    db.createCollection("companies")
+    \end{lstlisting}
+    
+    \item Überprüfe, ob die Collections erstellt wurden:
+
+    \begin{lstlisting}
+    show collections
+    \end{lstlisting}
+    
+    Du solltest jetzt die Collections \texttt{user} und \texttt{companies} sehen.
+\end{enumerate}
+
+\subsubsection{Schritt 3: Benutzerrolle und Benutzer erstellen}
+
+\subsubsection{Erstellen eines Benutzers mit Zugriffsrechten}
+Nun erstellen wir eine Benutzerrolle, die Zugriff auf beide Collections hat, und fügen der Datenbank einen Benutzer hinzu, der diese Rolle verwendet.
+
+\begin{enumerate}
+    \item Erstelle einen neuen Benutzer mit der Rolle, um Zugriff auf die Datenbank zu erhalten:
+
+    \begin{lstlisting}
+    db.createUser({
+        user: "appUser",
+        pwd: "strongpassword",
+        roles: [
+            {
+                role: "readWrite",
+                db: "myappdb"
+            }
+        ]
+    })
+    \end{lstlisting}
+    
+    Dieser Befehl erstellt den Benutzer \texttt{appUser} mit dem Passwort \texttt{strongpassword} und der Rolle \texttt{readWrite}, die Lese- und Schreibzugriff auf die Datenbank \texttt{myappdb} ermöglicht.
+    
+    \item Überprüfe, ob der Benutzer korrekt erstellt wurde:
+
+    \begin{lstlisting}
+    db.getUsers()
+    \end{lstlisting}
+\end{enumerate}
+
+\subsubsection{Verbindung als neuer Benutzer testen}
+Schließe die aktuelle MongoDB-Sitzung und verbinde dich erneut mit dem neu erstellten Benutzer:
+
+\begin{lstlisting}
+mongosh -u appUser -p strongpassword --authenticationDatabase myappdb
+\end{lstlisting}
+
+Wenn die Verbindung erfolgreich ist, hast du den Zugriff auf die Datenbank mit den richtigen Berechtigungen eingerichtet.
+
+\subsubsection{Schritt 4: MongoDB-Sicherheitskonfiguration}
+\begin{enumerate}
+    \item Bearbeite die MongoDB-Konfigurationsdatei, um die Authentifizierung zu erzwingen:
+
+    \begin{lstlisting}
+    sudo nano /etc/mongod.conf
+    \end{lstlisting}
+    
+    \item Füge in der Datei folgende Zeile hinzu, um die Authentifizierung zu aktivieren:
+
+    \begin{lstlisting}
+    security:
+      authorization: "enabled"
+    \end{lstlisting}
+    
+    \item Starte den MongoDB-Dienst neu, damit die Änderungen wirksam werden:
+
+    \begin{lstlisting}
+    sudo systemctl restart mongod
+    \end{lstlisting}
+\end{enumerate}
 \end{document}
