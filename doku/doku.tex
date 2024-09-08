@@ -96,8 +96,13 @@ Rechenzentrum muss die eignenen Firewall Regeln so anpassen das die ServerIp auf
 
 \subsubsection{Verbindung zum Server}
 
-ssh name@ip
-password : 
+Die Verbindung zum Server erfolgt über eine SSH verbindung. 
+Zuerst wird folgender Befehl ausgeführt, danach muss dass Passwort eingeben werden. 
+ 
+\begin{lstlisting}
+    ssh name@SeverIp
+    password:  
+\end{lstlisting}
 
 \subsection{Apache2}
 \subsubsection{Voraussetzungen}
@@ -160,7 +165,7 @@ Dieser Befehl öffnet die Ports 80 (HTTP) und 443 (HTTPS).
 Die Standardkonfiguration von Apache befindet sich in der Datei \texttt{/etc/apache2/apache2.conf}. Normalerweise musst du diese Datei nicht ändern, es sei denn, du möchtest spezielle Einstellungen vornehmen.
 
 Um eine benutzerdefinierte Website hinzuzufügen, kannst du eine neue Konfigurationsdatei in \texttt{/etc/apache2/sites-available/} erstellen. Ein Beispiel für eine einfache Konfigurationsdatei:
-
+Das wird in dem Kapitel zur Vuewebapp nochmal genauer erklärt.
 \begin{lstlisting}
 <VirtualHost *:80>
     ServerAdmin webmaster@domain.com
@@ -188,17 +193,6 @@ sudo apachectl configtest
 Wenn alles in Ordnung ist, solltest du die Meldung \texttt{Syntax OK} erhalten.
 
 \subsection{Webapp}
-
-npm run build 
-
-dist ordner mittels scp an Server schicken 
-
-unter /var/www/ Speichern 
-
-Unter /etc/apach2/ .... neue Conf anlegen
-
-Hier beschreiben was in Conf rein muss. 
-
 
 \subsubsection{Voraussetzungen}
 \begin{itemize}
@@ -281,26 +275,25 @@ Hier beschreiben was in Conf rein muss.
     \item Füge die folgende Konfiguration ein:
     
     \begin{lstlisting}
-<VirtualHost *:80>
-    ServerAdmin admin@example.com
-    ServerName example.com
-    ServerAlias www.example.com
 
-    DocumentRoot /var/www/vuewebapp
+    <VirtualHost *:80>
+        ServerAdmin webmaster@localhost
+        DocumentRoot /var/www/html/vuewebapp
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+        <Directory /var/www/html/vuewebapp>
+            Options Indexes FollowSymLinks
+            AllowOverride All
+            Require all granted
+        </Directory>
+        <Location /api>
+            ProxyPass http://localhost:8080/api
+            ProxyPassReverse http://localhost:8080/api
+        </Location>
+    </VirtualHost>
 
-    <Directory /var/www/vuewebapp>
-        Options Indexes FollowSymLinks
-        AllowOverride All
-        Require all granted
-    </Directory>
-
-    ErrorLog ${APACHE_LOG_DIR}/vuewebapp_error.log
-    CustomLog ${APACHE_LOG_DIR}/vuewebapp_access.log combined
-</VirtualHost>
     \end{lstlisting}
     
-    Ersetze \texttt{example.com} mit deiner tatsächlichen Domain.
-
     \item Aktiviere die neue Apache2-Site:
     
     \begin{lstlisting}
@@ -332,7 +325,7 @@ Hier beschreiben was in Conf rein muss.
 Rufe deine Domain oder die IP-Adresse des Servers in einem Webbrowser auf:
 
 \begin{lstlisting}
-http://example.com
+http://example.com oder Server IP
 \end{lstlisting}
 
 Du solltest die Startseite deiner Vue.js-Anwendung sehen.
@@ -340,13 +333,6 @@ Du solltest die Startseite deiner Vue.js-Anwendung sehen.
 
 
 \subsection{Node Backend}
-
-Auf Server 
-
-Als Service von Ubuntu Starten 
-
-unter /etc/apache2  ein Reverse Proxy erstellen 
-
 \subsubsection{Voraussetzungen}
 \begin{itemize}
     \item Eine Node.js-Anwendung, die lokal läuft.
@@ -417,19 +403,23 @@ unter /etc/apache2  ein Reverse Proxy erstellen
     \item Füge den folgenden Inhalt ein:
     
     \begin{lstlisting}
-[Unit]
-Description=Node.js Backend Application
-After=network.target
+    [Unit]
+    Description=Backend for Praxissemseterbewerten
+    After=network.target
+    
+    [Service]
+    ExecStart=/home/backend/.nvm/versions/node/v22.4.0/bin/node /var/www/backend/server.js
+    
+    WorkingDirectory=/var/www/backend
+    Restart=always
+    User=backend
+    Group=backend
+    Environment=PATH=/usr/bin:/usr/local/bin
+    Environment=NODE_ENV=production
+    
+    [Install]
+    WantedBy=multi-user.target
 
-[Service]
-ExecStart=/usr/bin/node /var/www/backend/app.js
-WorkingDirectory=/var/www/backend
-Restart=always
-User=www-data
-Environment=PORT=8080
-
-[Install]
-WantedBy=multi-user.target
     \end{lstlisting}
     
     Hierbei solltest du den Pfad zu deiner Hauptdatei (\texttt{app.js}) anpassen.
@@ -479,25 +469,20 @@ WantedBy=multi-user.target
     \item Füge den folgenden Reverse-Proxy-Abschnitt in die VirtualHost-Konfiguration ein:
     
     \begin{lstlisting}
-<VirtualHost *:80>
-    ServerAdmin admin@example.com
-    ServerName example.com
-    ServerAlias www.example.com
-
-    DocumentRoot /var/www/vuewebapp
-
-    <Directory /var/www/vuewebapp>
-        Options Indexes FollowSymLinks
-        AllowOverride All
-        Require all granted
-    </Directory>
-
-    ProxyPass /api http://localhost:8080/api
-    ProxyPassReverse /api http://localhost:8080/api
-
-    ErrorLog ${APACHE_LOG_DIR}/vuewebapp_error.log
-    CustomLog ${APACHE_LOG_DIR}/vuewebapp_access.log combined
-</VirtualHost>
+    <VirtualHost *:80>
+        ServerName 141.69.205.112
+        ProxyRequests off
+        ProxyPass / http://localhost:8080/
+        ProxyPassReverse / http://localhost:8080/
+    
+        <Proxy *>
+            Order deny,allow
+            Allow from all
+        </Proxy>
+    
+        ErrorLog ${APACHE_LOG_DIR}/your-node-app_error.log
+        CustomLog ${APACHE_LOG_DIR}/your-node-app_access.log combined
+    </VirtualHost>
     \end{lstlisting}
     
     Dieser Abschnitt leitet alle Anfragen, die mit \texttt{/api} beginnen, an die Node.js-Anwendung auf Port 8080 weiter.
@@ -618,7 +603,7 @@ Nun erstellen wir eine Benutzerrolle, die Zugriff auf beide Collections hat, und
     \begin{lstlisting}
     db.createUser({
         user: "appUser",
-        pwd: "strongpassword",
+        pwd: "passwort",
         roles: [
             {
                 role: "readWrite",
