@@ -21,7 +21,7 @@ export default createStore({
     async loginAction({ commit,dispatch }, credentials) {
       console.log("in storejs");
       // try {
-      //   const response = await axios.post('http://localhost:8080/login', credentials);
+      //   const response = await axios.post('/api/login', credentials);
       //   if (response.status === 200) {
 
       //     commit('setAuthentication', true);
@@ -39,9 +39,10 @@ export default createStore({
         console.error('Login failed:', error);
       }
     },
+    
     async logoutAction({ commit }) {
       try {
-        const response = await axios.post('http://localhost:8080/logout');
+        const response = await axios.post('http://localhost:8080/api/logout');
         if (response.status === 200) {
           commit('setAuthentication', false);
           commit('setUser',null);
@@ -54,7 +55,7 @@ export default createStore({
     async addUser({ state }, username) {
       console.log("In addUser");
       try {
-        const response = await axios.post('http://localhost:8080/addUser', {
+        const response = await axios.post('http://localhost:8080/api/addUser', {
           _id: username,
           role: 1,
           anzahlBewertungen: 0,

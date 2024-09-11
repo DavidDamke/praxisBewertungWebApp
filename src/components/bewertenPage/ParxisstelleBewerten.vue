@@ -11,6 +11,7 @@
           fast-fail
           v-model="form"
           ref="form"
+          @submit.prevent="createNewCompany"
         >
           <v-row>
             <v-col cols="12">
@@ -171,7 +172,7 @@ export default {
         username:this.userState,
       }
       axios
-      .post("http://localhost:8080/getUser", user )
+      .post("http://localhost:8080/api/getUser", user )
       .then((response) => {
         this.user = response.data[0];
       })
@@ -180,6 +181,7 @@ export default {
     },
     
     createNewCompany() {
+
       const formData = {
         _id: this.unternehmen.toLowerCase(),
         name: this.unternehmen,
@@ -202,9 +204,9 @@ export default {
     },
     async submitCompany() {
       try {
-        const response = await axios.post("http://localhost:8080/addNewCompany", this.formData); //Add or Update Company
+        console.log("In SubmitCompany");
+        const response = await axios.post("http://localhost:8080/api/addNewCompany", this.formData); //Add or Update Company
         console.log(response);
-        this.$router.push("/mainpage");
       } catch (error) {
         console.error("Error:", error);
       }
@@ -212,7 +214,7 @@ export default {
     updateUser(){
       this.user.anzahlBewertungen++;
       axios
-      .post("http://localhost:8080/updateUser", this.user )
+      .post("http://localhost:8080/api/updateUser", this.user )
       .then((response) => {
         this.user = response.data[0];
       })
@@ -222,7 +224,7 @@ export default {
   },
   mounted() {
     axios
-      .get("http://localhost:8080/getAllCompanies")
+      .get("http://localhost:8080/api/getAllCompanies")
       .then((response) => {
         this.companies = response.data.map((companie) => companie.name);
       })

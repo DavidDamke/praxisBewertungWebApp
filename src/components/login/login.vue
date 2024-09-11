@@ -62,6 +62,7 @@ export default {
     async login() {
       try {
         await this.loginAction({ username: this.username, password: this.password });
+        
         this.$router.push('/mainpage');
       } catch (error) {
         console.error('Login error:', error);
