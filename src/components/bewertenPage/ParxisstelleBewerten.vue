@@ -202,11 +202,11 @@ export default {
       this.submitCompany();
       this.updateUser();
     },
-    async submitCompany() {
+    submitCompany() {
       try {
         console.log("In SubmitCompany");
-        const response = await axios.post("http://localhost:8080/api/addNewCompany", this.formData); //Add or Update Company
-        console.log(response);
+        axios.post("http://localhost:8080/api/addNewCompany", this.formData); //Add or Update Company
+        this.$router.push('/mainpage');
       } catch (error) {
         console.error("Error:", error);
       }
