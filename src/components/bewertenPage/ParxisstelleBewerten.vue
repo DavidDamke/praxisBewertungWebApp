@@ -107,7 +107,7 @@
         </v-form>
       </v-col>
     </v-container>
-    <div v-else>
+    <div v-else class="mittig">
       <h3>Du hast bereits ein Unternehmen bewertet.</h3>
     </div>
   </div>
@@ -244,6 +244,13 @@ export default {
 .name {
   flex: 1;
   min-width: 100px;
+}
+.mittig {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 90vh;
+  text-align: center; /* Text in der Mitte ausrichten */
 }
 .rating {
   flex: none;

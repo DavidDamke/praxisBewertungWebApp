@@ -28,7 +28,6 @@
             <v-rating
               active-color="orange-lighten-1"
               id="rating"
-              half-increments
               :model-value="avgRating(item, 'gesamt')"
               readonly
             ></v-rating>
@@ -51,7 +50,6 @@
           <v-rating
             id="rating"
             :model-value="avgRating(selectedCompany,'gesamt')"
-            half-increments
             readonly
             active-color="orange-lighten-1"
           ></v-rating>

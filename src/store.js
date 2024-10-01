@@ -19,24 +19,19 @@ export default createStore({
   },
   actions: {
     async loginAction({ commit,dispatch }, credentials) {
-      console.log("in storejs");
-      // try {
-      //   const response = await axios.post('/api/login', credentials);
-      //   if (response.status === 200) {
-
-      //     commit('setAuthentication', true);
-        
-      //   }
-      // } catch (error) {
-      //   console.error('Login failed:', error.response.data.message);
-      // }
       try {
+         const response = await axios.post('http://localhost:8080/api/login', credentials);
+         console.log(response);
+         if (response.status === 200) {
 
           commit('setAuthentication', true);
           commit('setUser', credentials.username);
           dispatch('addUser', credentials.username);
+         }
+
       } catch (error) {
         console.error('Login failed:', error);
+        throw error;
       }
     },
     

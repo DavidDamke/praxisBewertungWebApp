@@ -9,12 +9,14 @@
         <v-icon>{{ item.icon }}</v-icon>
         {{ item.text }}
       </v-tab>
-      <button
-      v-if="isLogedIn"
-      @click="logout"
-    >Logout</button>
+      <v-spacer></v-spacer>
+      <v-tab v-if="isLogedIn"
+      @click="logout">
+      <v-icon left>mdi-logout</v-icon>
+        Abmelden
+      </v-tab>
     </v-tabs>
-   
+    
   </v-card>
 </template>
 <script>

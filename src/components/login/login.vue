@@ -7,8 +7,12 @@
       <v-alert
         type="info"
         class="mb-4 highlighted-text-alert"
+        variant="outlined"
       >
         Bitte verwende deine RWU-Zugangsdaten wie für das LSF etc.
+      </v-alert>
+      <v-alert v-if="errorMessage" type="error" variant="outlined" class="mb-4">
+         {{ errorMessage }}
       </v-alert>
       <v-form
         v-model="form"
@@ -29,14 +33,15 @@
           clearable
           :rules="[required]"
         ></v-text-field>
+       
         <v-btn
-          type="submit"
-          block
-          :disabled="!form"
+        type="submit"
+        block
+        :disabled="!form"
         >
-          Login
-        </v-btn>
-      </v-form>
+        Login
+      </v-btn>
+    </v-form>
     </v-card>
 
   </v-container>
@@ -58,14 +63,20 @@ export default {
     required(v) {
       return !!v || 'Dieses Feld ist erforderlich';
     },
+
     ...mapActions(['loginAction']),
     async login() {
       try {
         await this.loginAction({ username: this.username, password: this.password });
-        
+        this.errorstatus=200;
         this.$router.push('/mainpage');
       } catch (error) {
         console.error('Login error:', error);
+        if (error.response && error.response.status === 401) {
+          this.errorMessage = 'Die Nutzerdaten sind nicht bekannt!';
+        } else {
+          this.errorMessage = 'An unexpected error occurred';
+        }
       }
     },
   },
