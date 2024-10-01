@@ -32,8 +32,7 @@
           type="password"
           clearable
           :rules="[required]"
-        ></v-text-field>
-       
+        ></v-text-field> 
         <v-btn
         type="submit"
         block
@@ -63,12 +62,11 @@ export default {
     required(v) {
       return !!v || 'Dieses Feld ist erforderlich';
     },
-
     ...mapActions(['loginAction']),
     async login() {
       try {
         await this.loginAction({ username: this.username, password: this.password });
-        this.errorstatus=200;
+        
         this.$router.push('/mainpage');
       } catch (error) {
         console.error('Login error:', error);
