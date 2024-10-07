@@ -34,7 +34,7 @@ export default {
       tabs: [
         {
           icon: "mdi-magnify",
-          text: "Praxissemster finden",
+          text: "Praxisstelle finden",
           route: "/mainpage",
         },
         {
@@ -61,4 +61,14 @@ export default {
 </script>
 
 <style scoped>
+  div{
+    background-color: #6638b6;
+  }
+  .v-tab {
+  color: white;
+}
+
+.v-icon {
+  color: white;
+}
 </style>

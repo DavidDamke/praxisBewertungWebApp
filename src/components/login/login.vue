@@ -9,7 +9,7 @@
         class="mb-4 highlighted-text-alert"
         variant="outlined"
       >
-        Bitte verwende deine RWU-Zugangsdaten wie für das LSF etc.
+        Bitte verwende deine RWU-Zugangsdaten, wie für das LSF etc.
       </v-alert>
       <v-alert v-if="errorMessage" type="error" variant="outlined" class="mb-4">
          {{ errorMessage }}
@@ -71,7 +71,7 @@ export default {
       } catch (error) {
         console.error('Login error:', error);
         if (error.response && error.response.status === 401) {
-          this.errorMessage = 'Die Nutzerdaten sind nicht bekannt!';
+          this.errorMessage = 'Die Nutzerdaten sind nicht bekannt.';
         } else {
           this.errorMessage = 'An unexpected error occurred';
         }

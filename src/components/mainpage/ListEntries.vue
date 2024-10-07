@@ -13,7 +13,7 @@
     <v-virtual-scroll
       v-else
       :items="getPaginatedCompaniesList()"
-      height="660"
+      height="70vH"
     >
       <template v-slot:default="{ item }">
         <v-card
@@ -149,6 +149,10 @@ export default {
     },
 
     filterCompanies() {
+      if(this.searchValue==null){
+        this.filteredCompanies=this.companies;
+        return  this.filteredCompanies};
+
       this.filteredCompanies = this.companies.filter((document) =>
         document.name.toLowerCase().includes(this.searchValue.toLowerCase())
       );
